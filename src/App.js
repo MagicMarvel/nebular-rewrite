@@ -5,13 +5,15 @@ import Home from "./pages/home";
 class index extends React.Component {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+      <div style={{ scrollBehavior: "smooth" }}>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }
