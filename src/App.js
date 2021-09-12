@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Demo from "./pages/demo";
 import Home from "./pages/home";
 // 应用路由
 class index extends React.Component {
@@ -11,10 +12,14 @@ class index extends React.Component {
             <Route exact path="/">
               <Home />
             </Route>
+            <Route path="/demo">
+              <Demo />
+            </Route>
           </Switch>
         </Router>
       </div>
     );
   }
 }
+
 export default index;
