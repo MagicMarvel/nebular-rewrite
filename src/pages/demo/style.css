@@ -1,20 +1,21 @@
-.boss-text-enter {
+.btn-enter {
   opacity: 0;
+  /* transform: translateX(100%); */
 }
-.boss-text-enter-active {
+
+.btn-enter-active {
   opacity: 1;
-  transition: opacity 2000ms;
+  /* transform: translateX(0); */
+  transition: all 1s;
 }
-.boss-text-enter-done {
+
+.btn-exit {
   opacity: 1;
+  /* transform: translateX(0); */
 }
-.boss-text-exit {
-  opacity: 1;
-}
-.boss-text-exit-active {
+
+.btn-exit-active {
   opacity: 0;
-  transition: opacitty 2000ms;
-}
-.boss-text-exit-done {
-  opacity: 0;
+  /* transform: translateX(-100%); */
+  transition: all 1s;
 }

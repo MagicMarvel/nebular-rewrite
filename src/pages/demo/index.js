@@ -1,43 +1,86 @@
-import React, { useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import "./style.css";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams,
+} from "react-router-dom";
 
-class index extends React.Component {
-  state = {
-    toshow: false,
-    list: [1, 2, 3, 4, 5],
-  };
-  changeToshow = (choice) => {
-    this.setState({ toshow: choice });
-  };
-  render() {
-    return (
-      <>
-        <ul
-          ref={(ul) => {
-            this.ul = ul;
-          }}
-        >
-          <TransitionGroup>
-            {this.state.list.map((item, index) => {
-              return (
-                <CSSTransition
-                  in={this.state.toshow}
-                  timeout={2000}
-                  classNames="boss-text"
-                  unmountOnExit
-                  appear={true}
-                  key={item + index}
-                >
-                  <div key={item + index}>{item}</div>
-                </CSSTransition>
-              );
-            })}
-          </TransitionGroup>
+export default function App() {
+  const match = useRouteMatch();
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to={`${match.url}/`}>Home</Link>
+          </li>
+          <li>
+            <Link to={`${match.url}/about`}>About</Link>
+          </li>
+          <li>
+            <Link to={`${match.url}/topics`}>Topics</Link>
+          </li>
         </ul>
-        <button onClick={() => this.changeToshow(true)}>show!!</button>
-      </>
-    );
-  }
+
+        <Switch>
+          <Route path={`${match.url}/about`}>
+            <About />
+          </Route>
+          <Route path={`${match.url}/topics`}>
+            <Topics />
+          </Route>
+          <Route path={`${match.url}/`}>
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  );
 }
-export default index;
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Topics() {
+  let match = useRouteMatch();
+  console.log(match);
+  return (
+    <div>
+      <h2>Topics</h2>
+      <ul>
+        <li>
+          <Link to={`${match.url}/components`}>Components</Link>
+        </li>
+        <li>
+          <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+        </li>
+      </ul>
+
+      {/* The Topics page has its own <Switch> with more routes
+          that build on the /topics URL path. You can think of the
+          2nd <Route> here as an "index" page for all topics, or
+          the page that is shown when no topic is selected */}
+      <Switch>
+        <Route path={`${match.path}/:topicId`}>
+          <Topic />
+        </Route>
+        <Route path={match.path}>
+          <h3>Please select a topic.</h3>
+        </Route>
+      </Switch>
+    </div>
+  );
+}
+
+function Topic() {
+  let { topicId } = useParams();
+  return <h3>Requested topic ID: {topicId}</h3>;
+}
