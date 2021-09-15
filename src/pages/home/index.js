@@ -59,7 +59,7 @@ export default function Index(props) {
             <CSSTransition
               key={mainDisplay === true ? "display" : "indisplay"}
               classNames="HomeMainAnimation"
-              timeout={500}
+              timeout={200}
             >
               {/* 如果需要显示main，则显示，否则显示按了四个按钮的界面，这之间的切换通过react-transition-group做 */}
               {mainDisplay === true ? (
