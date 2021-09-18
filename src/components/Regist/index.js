@@ -12,7 +12,7 @@ export default function index(props) {
           type="text"
           name="usrName"
           placeholder="登录的用户名"
-          className="w-48 lg:w-64 text-black"
+          className="w-48 lg:w-64 text-black placeholder-gray-400"
         />
       </div>
       <div className="p-3">

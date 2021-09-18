@@ -18,12 +18,10 @@ import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for
 
 import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
-const markdown = ``;
-
 export default function Index(props) {
   return (
     <ReactMarkdown
-      children={markdown}
+      children={props.markdown}
       remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex, rehypeSlug, rehypeToc]}
       components={{
