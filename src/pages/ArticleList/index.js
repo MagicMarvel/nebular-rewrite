@@ -30,7 +30,7 @@ export default function Index(props) {
           {/* 博客名 */}
           <div
             className="text-5xl font-kaiti text-center text-gray-600 my-2 hover:text-purple-600 
-            transform transition-all md:ml-14"
+						transform transition-all md:ml-14"
           >
             小怪兽
           </div>
@@ -69,7 +69,7 @@ export default function Index(props) {
             {/* 网站信息，点击量之类的 */}
             <ul
               className="hidden md:mx-6 md:text-gray-600 md:font-kaiti md:text-xs md:inline-block 
-            md:translate-y-3 md:transform"
+						md:translate-y-3 md:transform"
             >
               <li className="inline ">
                 点击量<span>?</span>
@@ -93,8 +93,8 @@ export default function Index(props) {
                   {/* 文章名 */}
                   <div
                     className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
-                text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
-                  "
+								text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
+									"
                   >
                     <div className="transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer">
                       {item.title}
@@ -124,7 +124,7 @@ export default function Index(props) {
                 {/* 显示用户的小框框 */}
                 <div
                   className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
-                  lg:float-right lg:mt-16"
+									lg:float-right lg:mt-16"
                 ></div>
                 {/* 清除用户卡片的右浮动 */}
                 <div className="clear-both"></div>

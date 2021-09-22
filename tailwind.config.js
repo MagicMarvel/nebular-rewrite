@@ -21,6 +21,11 @@ module.exports = {
       zIndex: {
         "-10": "-10",
       },
+      padding: {
+        "1/2": "1/2",
+        "1/4": "1/4",
+        "3/4": "3/4",
+      },
       backgroundImage: (theme) => ({
         sky: "url('https://z3.ax1x.com/2021/09/10/hvsPXQ.png')",
         guitar: "url('https://z3.ax1x.com/2021/09/10/hv6YQO.png')",
