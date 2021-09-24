@@ -1,3 +1,4 @@
+// markdown渲染器
 import React from "react";
 import { BASE_URL } from "../../utils/pathMap";
 
@@ -7,11 +8,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 // 为上面的渲染增加代码高亮组件 https://github.com/react-syntax-highlighter/react-syntax-highlighter
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  prism,
-  materialLight,
-  materialOceanic,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { materialOceanic } from "react-syntax-highlighter/dist/esm/styles/prism";
 // 提供数学公式渲染功能
 // use a syntax extension (through remark-math) is used to support math in markdown,
 // and a transform plugin (rehype-katex) to render that math.
@@ -34,7 +31,8 @@ export default function Index(props) {
     <div className="relative">
       <ReactMarkdown
         className="w-full"
-        children={props.markdown}
+        // 删去toc字符串
+        children={props.markdown.replace("[toc]", "").replace("[TOC]", "")}
         remarkPlugins={[
           remarkGfm,
           remarkMath,
@@ -48,9 +46,9 @@ export default function Index(props) {
             {
               headings: ["h1", "h2", "h3"],
               cssClasses: {
-                toc: "hidden md:block bg-gray-500", // Change the CSS class for the TOC
-                link: "focus:text-blue-900 text-indigo-200 font-kaiti font-bold list-disc", // Change the CSS class for links in the TOC
-                listItem: "ml-3 ",
+                toc: "hidden md:block bg-toc rounded px-3 m-3", // Change the CSS class for the TOC
+                link: "visited:text-yellow-300 text-toc-text font-kaiti list-disc", // Change the CSS class for links in the TOC
+                listItem: "ml-3 text-toc-text",
               },
               customizeTOC: (toc) => {
                 console.log(toc);

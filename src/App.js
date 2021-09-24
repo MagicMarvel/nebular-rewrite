@@ -16,7 +16,7 @@ class index extends React.Component {
           <Route path="/demo">
             <Demo />
           </Route>
-          <Route path="/articleList">
+          <Route path="/articleList/:pageNum">
             <ArticleList />
           </Route>
           <Route path="/article/:articleId">

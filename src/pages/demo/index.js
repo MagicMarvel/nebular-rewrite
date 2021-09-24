@@ -1,118 +1,153 @@
-import React from "react";
-// 用于将markdown格式渲染成html https://github.com/remarkjs/react-markdown
-import ReactMarkdown from "react-markdown";
-// 为上面的渲染增加增强插件 https://github.com/remarkjs/remark-gfm
-import remarkGfm from "remark-gfm";
-// 为上面的渲染增加代码高亮组件 https://github.com/react-syntax-highlighter/react-syntax-highlighter
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
-// 提供数学公式渲染功能
-// use a syntax extension (through remark-math) is used to support math in markdown,
-// and a transform plugin (rehype-katex) to render that math.
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-// 提供目录功能
-import rehypeToc from "rehype-toc";
-import rehypeSlug from "rehype-slug";
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
-
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
-
-const markdown = ``;
+import React, { useEffect, useState } from "react";
+import Require from "../../utils/Require";
+import { Link } from "react-router-dom";
+import { GET_ARTICLE_LIST, GET_QUESTION_LIST } from "../../utils/pathMap";
 
 export default function Index(props) {
-  return (
-    <ReactMarkdown
-      children={markdown}
-      remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeKatex, rehypeSlug, rehypeToc]}
-      components={{
-        code({ node, inline, className, children, ...props }) {
-          const match = /language-(\w+)/.exec(className || "");
-          return !inline && match ? (
-            <SyntaxHighlighter
-              children={String(children).replace(/\n$/, "")}
-              style={prism}
-              language={match[1]}
-              PreTag="div"
-              {...props}
-            />
-          ) : (
-            <code className={className} {...props}>
-              {children}
-            </code>
-          );
+  const [articleList, setArticleList] = useState(undefined);
+  const [QAList, setQAList] = useState(undefined);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Require.get(GET_ARTICLE_LIST, {
+        params: {
+          page: 1,
+          size: 5,
         },
-        h1: ({ node, ...props }) => (
-          <h1
-            className="text-gray-500 font-kaiti text-3xl leading-normal border-b border-gray-600"
-            {...props}
+      });
+      setArticleList(res.data.data.detail);
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Require.get(GET_QUESTION_LIST, {
+        params: {
+          page: 1,
+          size: 5,
+        },
+      });
+      setQAList(res.data.detail);
+    };
+  }, []);
+  return (
+    <>
+      {/* 背景 */}
+      <div className="bg-sky h-screen w-screen bg-center fixed inset-0 -z-10" />
+      {/* 白色大卡片 */}
+      <div className="bg-gray-200 bg-opacity-80 p-10 rounded-3xl md:w-11/12 md:mx-auto md:my-10">
+        {/* 博客标题副标题导航栏 */}
+        <div className="flex flex-col items-center justify-between h-48 md:items-start">
+          {/* flex浮动控制用 */}
+          <div></div>
+          {/* 博客名 */}
+          <div
+            className="text-5xl font-kaiti text-center text-gray-600 my-2 hover:text-purple-600 
+						transform transition-all md:ml-14"
           >
-            {props.children}
-          </h1>
-        ),
-        h2: ({ node, ...props }) => (
-          <h2 className="text-gray-500 font-kaiti text-2xl my-4" {...props}>
-            {props.children}
-          </h2>
-        ),
-        h3: ({ node, ...props }) => (
-          <h3 className="text-gray-500 font-kaiti text-xl" {...props}>
-            {props.children}
-          </h3>
-        ),
-        h4: ({ node, ...props }) => (
-          <h4 className="text-gray-500 font-kaiti text-lg" {...props}>
-            {props.children}
-          </h4>
-        ),
-        h5: ({ node, ...props }) => (
-          <h5 className="text-gray-500 font-kaiti text-base" {...props}>
-            {props.children}
-          </h5>
-        ),
-        h6: ({ node, ...props }) => (
-          <h6 className="text-gray-500 font-kaiti text-base" {...props}>
-            {props.children}
-          </h6>
-        ),
-        p: ({ node, ...props }) => (
-          <p
-            className="text-gray-500 font-kaiti text-sm mt-4 break-words leading-relaxed"
-            {...props}
-          >
-            {props.children}
-          </p>
-        ),
-        blockquote: ({ node, ...props }) => (
-          <blockquote
-            className="border-gray-600 border-l-3 border-t border-b pb-4 pl-5"
-            {...props}
-          >
-            {props.children}
-          </blockquote>
-        ),
-        a: ({ node, ...props }) => (
-          <a className="text-blue-400 " {...props}>
-            {props.children}
-          </a>
-        ),
-        li: ({ node, ...props }) => (
-          <li className="leading-normal text-gray-500" {...props}>
-            {props.children}
-          </li>
-        ),
-        ul: ({ node, ...props }) => (
-          <ul className="ml-5 list-outside list-disc" {...props}>
-            {props.children}
-          </ul>
-        ),
-        ol: ({ node, ...props }) => (
-          <ol className="ml-5 list-outside list-decimal" {...props}>
-            {props.children}
-          </ol>
-        ),
-      }}
-    />
+            小怪兽
+          </div>
+          {/* 座右铭 */}
+          <div className="text-gray-400 text-sm font-kaiti -mt-4 md:ml-14">
+            啊手动阀打发
+          </div>
+          {/* 导航栏 */}
+          <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
+            <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
+              <Link
+                to="#"
+                className="hover:text-purple-600 transform transition-all"
+              >
+                首页
+              </Link>
+              <Link
+                to="#"
+                className="hover:text-purple-600 transform transition-all"
+              >
+                个人
+              </Link>
+              <Link
+                to="#"
+                className="hover:text-purple-600 transform transition-all"
+              >
+                文章
+              </Link>
+              <Link
+                to="#"
+                className="hover:text-purple-600 transform transition-all"
+              >
+                问答
+              </Link>
+            </ul>
+            {/* 网站信息，点击量之类的 */}
+            <ul
+              className="hidden md:mx-6 md:text-gray-600 md:font-kaiti md:text-xs md:inline-block 
+						md:translate-y-3 md:transform"
+            >
+              <li className="inline ">
+                点击量<span>?</span>
+              </li>
+              <li className="inline ">
+                运行时间<span>?</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {articleList !== undefined &&
+          articleList.map((item) => {
+            return (
+              // 单个的文章卡片，包括了左边的文章summary和右侧的用户
+              <div className="">
+                {/* 左侧的文章summary */}
+                <div
+                  key={item.articleId}
+                  className="border-b border-gray-600 border-dotted pb-2 lg:w-4/5 lg:float-left "
+                >
+                  {/* 文章名 */}
+                  <div
+                    className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
+								text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
+									"
+                  >
+                    <div className="transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer">
+                      {item.title}
+                    </div>
+                  </div>
+                  {/* 文章 summary */}
+                  <div className="font-kaiti lg:float-left">
+                    <div className="text-gray-600 select-none">
+                      {item.summary}
+                      <Link to="#" className="text-purple-900 ml-2">
+                        阅读更多....
+                      </Link>
+                    </div>
+                    {/* 作者 发布时间 */}
+                    <div className="mt-2 float-right">
+                      <span className="text-gray-400">
+                        posted @ {item.date}
+                      </span>
+                      <Link to="#" className="text-gray-400 ml-2">
+                        {item.author}
+                      </Link>
+                    </div>
+                  </div>
+                  {/* 清除发布时间和作者右浮动 */}
+                  <div className="clear-both"></div>
+                </div>
+                {/* 显示用户的小框框 */}
+                <div
+                  className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
+									lg:float-right lg:mt-16"
+                ></div>
+                {/* 清除用户卡片的右浮动 */}
+                <div className="clear-both"></div>
+              </div>
+            );
+          })}
+        {/* 清除浮动带来的大卡片高度不够情况，顺便做一个翻页buttom */}
+        <div className="clear-both float-right m-7">Next</div>
+        {/*  */}
+        <div className="clear-both"></div>
+      </div>
+    </>
   );
 }

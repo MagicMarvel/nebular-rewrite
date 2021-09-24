@@ -7,6 +7,7 @@ module.exports = {
       serif: ["ui-serif", "Georgia"],
       mono: ["ui-monospace", "SFMono-Regular"],
       kaiti: ["kaiti"],
+      Playball: ["Playball"],
     },
     borderWidth: {
       DEFAULT: "1px",
@@ -21,6 +22,12 @@ module.exports = {
       zIndex: {
         "-10": "-10",
       },
+      colors: {
+        // 用于 markdown TOC 颜色渲染，背景部分
+        toc: "#384348",
+        // 用于 markdown TOC 颜色渲染，文字部分
+        "toc-text": "#c3cee3",
+      },
       padding: {
         "1/2": "1/2",
         "1/4": "1/4",
@@ -33,7 +40,11 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      // 启用变体
+      textColor: ["visited"],
+    },
   },
+  // 插件系统，用于引入其他的css样式
   plugins: [],
 };

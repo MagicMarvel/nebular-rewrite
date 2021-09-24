@@ -2,21 +2,30 @@ import React, { useEffect, useState } from "react";
 import Require from "../../utils/Require";
 import { Link } from "react-router-dom";
 import { GET_ARTICLE_LIST } from "../../utils/pathMap";
+import { useParams } from "react-router-dom";
+import randomMotto from "../../utils/randomMotto";
+import PageNav from "../../components/PageNav";
 
 export default function Index(props) {
   const [articleList, setArticleList] = useState(undefined);
+  const [maxPage, setMaxPage] = useState(0);
+  // 向url取得要求访问第几页的articlelist
+  const { pageNum } = useParams();
   useEffect(() => {
+    // console.log(randomMotto());
     const fetchData = async () => {
       const res = await Require.get(GET_ARTICLE_LIST, {
         params: {
-          page: 1,
+          page: pageNum,
           size: 5,
         },
       });
+      console.log(res);
       setArticleList(res.data.data.detail);
+      setMaxPage(res.data.data.size);
     };
     fetchData();
-  }, []);
+  }, [pageNum]);
   return (
     <>
       {/* 背景 */}
@@ -29,14 +38,14 @@ export default function Index(props) {
           <div></div>
           {/* 博客名 */}
           <div
-            className="text-5xl font-kaiti text-center text-gray-600 my-2 hover:text-purple-600 
-						transform transition-all md:ml-14"
+            className="text-6xl duration-500 text-center text-gray-600 my-2 hover:text-purple-600 
+						transform transition-all md:ml-14 capitalize tracking-wider font-Playball"
           >
-            小怪兽
+            Nebular
           </div>
           {/* 座右铭 */}
           <div className="text-gray-400 text-sm font-kaiti -mt-4 md:ml-14">
-            啊手动阀打发
+            {randomMotto()}
           </div>
           {/* 导航栏 */}
           <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
@@ -132,7 +141,9 @@ export default function Index(props) {
             );
           })}
         {/* 清除浮动带来的大卡片高度不够情况，顺便做一个翻页buttom */}
-        <div className="clear-both float-right m-7">Next</div>
+        <div className="clear-both float-right m-7">
+          <PageNav maxPage={maxPage} nowPage={pageNum} type={"articleList"} />
+        </div>
         {/*  */}
         <div className="clear-both"></div>
       </div>
