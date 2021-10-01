@@ -24,5 +24,5 @@ export const GET_QUESTION_LIST = "/public/question/list";
 export const SEARCH_QUESTION = "/public/question/search";
 export const GET_QUESTION_BY_ID = "/public/question/get";
 export const POST_NEW_QUESTION = "/question/post";
-export const GET_ANSWER_BY_QUESTIONID = "/public/answer/getByQuestionId";
+export const GET_ANSWER_BY_QUESTIONID = "/public/answer/list";
 export const POST_ANSWER = "/answer/post";

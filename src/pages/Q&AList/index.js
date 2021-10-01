@@ -1,29 +1,80 @@
 import React, { useEffect, useState } from "react";
 import Require from "../../utils/Require";
 import { Link } from "react-router-dom";
-import { GET_ARTICLE_LIST } from "../../utils/pathMap";
+import { GET_ARTICLE_LIST, GET_QUESTION_LIST } from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
+import "./index.css";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import axios from "axios";
 import pureMarkdownToSummary from "../../utils/pureMarkdownToSummary";
 
+function QAListItemRender(props) {
+  return (
+    // 单个的文章卡片，包括了左边的文章summary和右侧的用户
+    <div className="">
+      {/* 左侧的文章summary */}
+      <div
+        key={props.item.questionId}
+        className="border-b border-gray-600 border-dotted pb-2 lg:float-left w-full"
+      >
+        <div className="inline-block lg:w-4/5">
+          {/* 文章名 */}
+          <div
+            className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
+      text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
+        "
+          >
+            <div className="transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer">
+              {props.item.title}
+            </div>
+          </div>
+          {/* 文章 summary */}
+          <div className="font-kaiti lg:float-left lg:w-full">
+            <div className="text-gray-600 select-none">
+              {pureMarkdownToSummary(props.item.summary)}
+            </div>
+            {/* 作者 发布时间 */}
+            <div className="mt-2 float-right">
+              <span className="text-gray-400">posted @ {props.item.date}</span>
+              <Link to="#" className="text-gray-400 ml-2">
+                {props.item.author}
+              </Link>
+            </div>
+          </div>
+          {/* 清除发布时间和作者右浮动 */}
+          <div className="clear-both"></div>{" "}
+        </div>
+        <div
+          className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
+        lg:float-right lg:mt-1"
+        ></div>
+      </div>
+      {/* 显示用户的小框框 */}
+
+      {/* 清除用户卡片的右浮动 */}
+      <div className="clear-both"></div>
+    </div>
+  );
+}
+
 export default function Index(props) {
-  const [articleList, setArticleList] = useState(undefined);
+  const [QAList, setQAList] = useState(undefined);
   const [maxPage, setMaxPage] = useState(0);
   // 向url取得要求访问第几页的articlelist
   const { pageNum } = useParams();
   useEffect(() => {
-    // console.log(randomMotto());
     const fetchData = async () => {
-      const res = await Require.get(GET_ARTICLE_LIST, {
+      const res = await Require.get(GET_QUESTION_LIST, {
         params: {
           page: pageNum,
           size: 5,
         },
       });
-      console.log(res);
-      setArticleList(res.data.data.detail);
+      setQAList(res.data.data.detail);
       setMaxPage(res.data.data.size);
+      console.log(res.data.data.detail);
     };
     fetchData();
   }, [pageNum]);
@@ -64,13 +115,13 @@ export default function Index(props) {
                 个人
               </Link>
               <Link
-                to="/articleList/1"
+                to="#"
                 className="hover:text-purple-600 transform transition-all"
               >
                 文章
               </Link>
               <Link
-                to="/QAList/1"
+                to="#"
                 className="hover:text-purple-600 transform transition-all"
               >
                 问答
@@ -90,70 +141,19 @@ export default function Index(props) {
             </ul>
           </div>
         </div>
-        {articleList !== undefined &&
-          articleList.map((item) => {
+        {QAList !== undefined &&
+          QAList.map((item) => {
             return (
-              // 单个的文章卡片，包括了左边的文章summary和右侧的用户
-              <div className="">
-                {/* 左侧的文章summary */}
-                <div
-                  key={item.articleId}
-                  className="border-b border-gray-600 border-dotted pb-2 lg:float-left w-full"
-                >
-                  <div className="inline-block lg:w-4/5">
-                    {/* 文章名 */}
-                    <div
-                      className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
-    text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
-      "
-                    >
-                      <Link
-                        to={`/article/${item.articleId}`}
-                        className="block transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer"
-                      >
-                        {item.title}
-                      </Link>
-                    </div>
-                    {/* 文章 summary */}
-                    <div className="font-kaiti lg:float-left lg:w-full">
-                      <div className="text-gray-600 select-none">
-                        {pureMarkdownToSummary(item.summary)}
-                        <Link
-                          to={`/article/${item.articleId}`}
-                          className="text-purple-600 ml-2 break-words"
-                        >
-                          ....阅读更多
-                        </Link>
-                      </div>
-                      {/* 作者 发布时间 */}
-                      <div className="mt-2 float-right">
-                        <span className="text-gray-400">
-                          posted @ {item.date}
-                        </span>
-                        <Link to="#" className="text-gray-400 ml-2">
-                          {item.author}
-                        </Link>
-                      </div>
-                    </div>
-                    {/* 清除发布时间和作者右浮动 */}
-                    <div className="clear-both"></div>{" "}
-                  </div>
-                  {/* 用户头像和信息卡片 */}
-                  <div
-                    className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
-      lg:float-right lg:mt-12 relative bottom-0"
-                  ></div>
-                </div>
-                {/* 显示用户的小框框 */}
-
-                {/* 清除用户卡片的右浮动 */}
-                <div className="clear-both"></div>
-              </div>
+              // 单个的提问卡片，包括了左边的文章summary和右侧的用户
+              <QAListItemRender
+                key={item.questionId}
+                item={item}
+              ></QAListItemRender>
             );
           })}
         {/* 清除浮动带来的大卡片高度不够情况，顺便做一个翻页buttom */}
         <div className="clear-both float-right m-7">
-          <PageNav maxPage={maxPage} nowPage={pageNum} type={"articleList"} />
+          <PageNav maxPage={maxPage} nowPage={pageNum} type={"QAList"} />
         </div>
         {/*  */}
         <div className="clear-both"></div>

@@ -1,28 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Require from "../../utils/Require";
-import { GET_ARTICLE_BY_ID } from "../../utils/pathMap";
+import {
+  GET_QUESTION_BY_ID,
+  GET_ANSWER_BY_QUESTIONID,
+} from "../../utils/pathMap";
 import MarkdownParse from "../../components/MarkdownParse";
 
 export default function Index(props) {
-  const [articleInformation, setArticleInformation] = useState(undefined);
-  const { articleId } = useParams();
+  const [questionImformation, setQuestionImformation] = useState(undefined);
+  const [answerList, setAnswerList] = useState(undefined);
+  const { questionId } = useParams();
+  //   get question details
   useEffect(() => {
     const fetchData = async () => {
-      const res = await Require.get(GET_ARTICLE_BY_ID, {
+      const res = await Require.get(GET_QUESTION_BY_ID, {
         params: {
-          articleId: articleId,
+          questionId: questionId,
         },
       });
-      if (res.data.code === 1) setArticleInformation(res.data.data);
+      console.log("question");
+      console.log(res);
+      if (res.data.code === 1) setQuestionImformation(res.data.data);
       else
-        setArticleInformation({
-          title: "文章不存在",
-          content: "文章不存在，若你认为这是一个错误，请向管理员联系",
+        setQuestionImformation({
+          title: "提问不存在",
+          content: "提问不存在，若你认为这是一个错误，请向管理员联系",
         });
     };
     fetchData();
-  }, [articleId]);
+  }, [questionId]);
+
+  //   get answerList
+  useEffect(() => {
+    const fetchDate = async () => {
+      const res = await Require.get(GET_ANSWER_BY_QUESTIONID, {
+        params: {
+          questionId: questionId,
+          size: 99,
+          page: 1,
+        },
+      });
+      console.log("answer list");
+      console.log(res);
+      setAnswerList(res.data.data.detail);
+    };
+    fetchDate();
+  }, [questionId]);
+
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
@@ -90,18 +115,18 @@ export default function Index(props) {
           </div>
         </div>
         {/* 文章显示，包括了题目和内容，这里的relative是为了markdown那个toc的定位 */}
-        {articleInformation !== undefined && (
+        {questionImformation !== undefined && (
           <div>
             <div
               className="mt-5 mb-2 border-l-3 border-blue-500 font-kaiti text-xl text-purple-500
             font-bold py-2 pl-3"
             >
               <div className="transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer">
-                {articleInformation !== undefined && articleInformation.title}
+                {questionImformation !== undefined && questionImformation.title}
               </div>
             </div>
             <MarkdownParse
-              markdown={articleInformation.content}
+              markdown={questionImformation.content}
             ></MarkdownParse>
           </div>
         )}

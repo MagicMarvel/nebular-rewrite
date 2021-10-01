@@ -113,7 +113,7 @@ export default function Index(props) {
           ),
           p: ({ node, ...props }) => (
             <p
-              className="text-gray-500 font-kaiti text-sm mt-4 break-words leading-relaxed"
+              className="text-gray-500 font-kaiti text-sm lg:text-base mt-4 break-words leading-relaxed"
               {...props}
             >
               {props.children}
@@ -134,7 +134,7 @@ export default function Index(props) {
           ),
           li: ({ node, ...props }) => (
             <li
-              className="font-kaiti leading-normal text-gray-500 my-1 text-sm"
+              className="font-kaiti leading-normal text-gray-500 my-1 text-sm lg:text-base"
               {...props}
             >
               {props.children}

@@ -25,8 +25,8 @@ const NavPageBlock = styled(Link)`
 class Index extends React.Component {
   makeUrl = (toPage) => {
     const { maxPage, nowPage, type, param } = this.props;
-    console.log(`maxPage:${maxPage}  nowPage:${nowPage}`);
     if (type === "articleList") return `/articleList/${toPage}`;
+    if (type === "QAList") return `/QAList/${toPage}`;
   };
   render() {
     const { maxPage, nowPage, type, param } = this.props;

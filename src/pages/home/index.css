@@ -1,3 +1,4 @@
+/* 首页的中间部分出现消失的动画 */
 .HomeMainAnimation-enter {
   opacity: 0;
 }
