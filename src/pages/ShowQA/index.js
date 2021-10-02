@@ -4,8 +4,35 @@ import Require from "../../utils/Require";
 import {
   GET_QUESTION_BY_ID,
   GET_ANSWER_BY_QUESTIONID,
+  GET_ANSWER_BY_ANSWERID,
 } from "../../utils/pathMap";
 import MarkdownParse from "../../components/MarkdownParse";
+
+function AnswerRender(props) {
+  const [answer, setAnswer] = useState(undefined);
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await Require.get(GET_ANSWER_BY_ANSWERID, {
+        params: {
+          answerId: props.answerId,
+        },
+      });
+      console.log("answer");
+      console.log(res.data.data);
+      setAnswer(res.data.data);
+    };
+    fetch();
+  }, [props.answerId]);
+  return (
+    <div>
+      {answer !== undefined && (
+        <div className="border-t my-3">
+          <MarkdownParse noTOC h1NoLine markdown={answer.content} />
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Index(props) {
   const [questionImformation, setQuestionImformation] = useState(undefined);
@@ -51,6 +78,7 @@ export default function Index(props) {
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
+
   return (
     <>
       {/* 背景 */}
@@ -126,10 +154,21 @@ export default function Index(props) {
               </div>
             </div>
             <MarkdownParse
+              noTOC
               markdown={questionImformation.content}
             ></MarkdownParse>
           </div>
         )}
+        {/* 渲染答案 */}
+        {answerList !== undefined &&
+          answerList.map((item) => {
+            return (
+              <AnswerRender
+                key={item.answerId}
+                answerId={item.answerId}
+              ></AnswerRender>
+            );
+          })}
         {/* 向上翻页按钮 */}
         <div
           className="fixed right-2 bottom-8 md:right-16 md:animate-bounce cursor-pointer"

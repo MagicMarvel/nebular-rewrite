@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
 import pureMarkdownToSummary from "../../utils/pureMarkdownToSummary";
+import UserCard from "../../components/UserCard";
 
 export default function Index(props) {
   const [articleList, setArticleList] = useState(undefined);
@@ -139,10 +140,9 @@ export default function Index(props) {
                     <div className="clear-both"></div>{" "}
                   </div>
                   {/* 用户头像和信息卡片 */}
-                  <div
-                    className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
-      lg:float-right lg:mt-12 relative bottom-0"
-                  ></div>
+                  <div className="hidden lg:inline-block lg:float-right">
+                    <UserCard uid={item.uid} />
+                  </div>
                 </div>
                 {/* 显示用户的小框框 */}
 

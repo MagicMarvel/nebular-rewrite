@@ -1,5 +1,5 @@
 // markdown渲染器
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../utils/pathMap";
 
 // 用于将markdown格式渲染成html https://github.com/remarkjs/react-markdown
@@ -17,26 +17,57 @@ import rehypeKatex from "rehype-katex";
 // 提供目录功能
 import rehypeToc from "rehype-toc";
 import rehypeSlug from "rehype-slug";
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
 import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
 // 渲染图片链接 https://github.com/Pondorasti/remark-img-links
 import remarkImgLinks from "@pondorasti/remark-img-links";
 
+const s = `
+# GFM
+
+## Autolink literals
+
+www.example.com, https://example.com, and contact@example.com.
+
+## Strikethrough
+
+~one~ or ~~two~~ tildes.
+
+## Table
+
+| a | b  |  c |  d  |
+| - | :- | -: | :-: |
+| - | :- |sd -: | :-:sdf |
+| - | :- |sd -: | :-:sdf |
+| - | :- |sd -: | :-:sdf |
+
+ a | b  |  c |  d  
+ - | :- | -: | :-: 
+ - | :- |sd -: | :-:sdf 
+
+## Tasklist
+
+* [ ] to do
+* [x] done
+`;
+
 // 为了目录的绝对定位，上一层组件需要设置为relative
+// 输入：markdown，传入noTOC可以不渲染TOC，传入h1NoLine可关闭h1标签下面的横线
 // TODO:增强目录的效果
 export default function Index(props) {
+  const { h1NoLine } = props;
   return (
     <div className="relative">
       <ReactMarkdown
         className="w-full"
         // 删去toc字符串
         children={props.markdown.replace("[toc]", "").replace("[TOC]", "")}
+        // children={s}
         remarkPlugins={[
-          remarkGfm,
           remarkMath,
           [remarkImgLinks, { absolutePath: BASE_URL }],
+          remarkGfm,
         ]}
         rehypePlugins={[
           rehypeKatex,
@@ -46,13 +77,11 @@ export default function Index(props) {
             {
               headings: ["h1", "h2", "h3"],
               cssClasses: {
-                toc: "hidden md:block bg-toc rounded px-3 m-3", // Change the CSS class for the TOC
+                toc: `hidden md:${
+                  props.noTOC === undefined ? "block" : "hidden"
+                } bg-toc rounded px-3 m-3`, // Change the CSS class for the TOC
                 link: "visited:text-yellow-300 text-toc-text font-kaiti list-disc", // Change the CSS class for links in the TOC
                 listItem: "ml-3 text-toc-text",
-              },
-              customizeTOC: (toc) => {
-                console.log(toc);
-                return toc;
               },
             },
           ],
@@ -71,21 +100,25 @@ export default function Index(props) {
               />
             ) : (
               <code
-                className={`${className} rounded bg-gray-400 bg-opacity-30 px-1.5`}
+                className={`${className} inline-block font-kaiti text-sm lg:text-base text-gray-500 rounded bg-gray-400 bg-opacity-30 px-1.5`}
                 {...props}
               >
                 {children}
               </code>
             );
           },
-          h1: ({ node, ...props }) => (
-            <h1
-              className="text-gray-500 font-kaiti text-3xl leading-normal border-b border-gray-600 md:pr-1/4 "
-              {...props}
-            >
-              {props.children}
-            </h1>
-          ),
+          h1: ({ node, ...props }) => {
+            return (
+              <h1
+                className={`text-gray-500 font-kaiti text-3xl leading-normal ${
+                  h1NoLine === undefined ? "border-b" : ""
+                }  border-gray-600 md:pr-1/4 `}
+                {...props}
+              >
+                {props.children}
+              </h1>
+            );
+          },
           h2: ({ node, ...props }) => (
             <h2 className="text-gray-500 font-kaiti text-2xl my-4" {...props}>
               {props.children}
@@ -132,15 +165,17 @@ export default function Index(props) {
               {props.children}
             </a>
           ),
-          li: ({ node, ...props }) => (
+          li: ({ node, ordered, ...props }) => (
             <li
-              className="font-kaiti leading-normal text-gray-500 my-1 text-sm lg:text-base"
+              className={`font-kaiti leading-normal text-gray-500 my-1 text-sm lg:text-base ${
+                ordered === true ? "list-decimal" : "list-disc"
+              }`}
               {...props}
             >
               {props.children}
             </li>
           ),
-          ul: ({ node, ...props }) => (
+          ul: ({ node, ordered, ...props }) => (
             <ul
               className="font-kaiti ml-5 mt-4 list-outside list-disc"
               {...props}
@@ -148,13 +183,34 @@ export default function Index(props) {
               {props.children}
             </ul>
           ),
-          ol: ({ node, ...props }) => (
+          ol: ({ node, ordered, ...props }) => (
             <ol
               className="font-kaiti ml-5 mt-4 list-outside list-decimal"
               {...props}
             >
               {props.children}
             </ol>
+          ),
+          table: ({ node, ...props }) => (
+            <table className="border-collapse text-gray-700" {...props}>
+              {props.children}
+            </table>
+          ),
+          td: ({ node, isHeader, ...props }) => (
+            <td className="border border-gray-500 " {...props}>
+              {props.children}
+            </td>
+          ),
+          th: ({ node, isHeader, ...props }) => (
+            <th
+              className="border border-gray-500 bg-green-500 text-gray-800 bg-opacity-80"
+              {...props}
+            >
+              {props.children}
+            </th>
+          ),
+          tr: ({ node, isHeader, ...props }) => (
+            <tr {...props}>{props.children}</tr>
           ),
         }}
       />

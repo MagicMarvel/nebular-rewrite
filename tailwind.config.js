@@ -33,6 +33,10 @@ module.exports = {
         "1/4": "1/4",
         "3/4": "3/4",
       },
+      borderColor: (theme) => ({
+        ...theme("colors"),
+        DEFAULT: theme("colors.gray.500", "currentColor"),
+      }),
       backgroundImage: (theme) => ({
         sky: "url('https://z3.ax1x.com/2021/09/10/hvsPXQ.png')",
         guitar: "url('https://z3.ax1x.com/2021/09/10/hv6YQO.png')",
