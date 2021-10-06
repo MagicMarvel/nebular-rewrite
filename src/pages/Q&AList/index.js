@@ -5,7 +5,6 @@ import { GET_ARTICLE_LIST, GET_QUESTION_LIST } from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
-import "./index.css";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import axios from "axios";
 import pureMarkdownToSummary from "../../utils/pureMarkdownToSummary";
@@ -103,19 +102,19 @@ export default function Index(props) {
           <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
             <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
               <Link
-                to="#"
+                to="/"
                 className="hover:text-purple-600 transform transition-all"
               >
                 首页
               </Link>
               <Link
-                to="#"
+                to="persionalPage"
                 className="hover:text-purple-600 transform transition-all"
               >
                 个人
               </Link>
               <Link
-                to="#"
+                to="/articleList/1"
                 className="hover:text-purple-600 transform transition-all"
               >
                 文章

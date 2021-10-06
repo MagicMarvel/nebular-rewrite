@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import "./index.css";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import BriefIntroduction from "../../components/BriefIntroduction";
 import Login from "../../components/Login";
@@ -29,12 +28,13 @@ const LiBtm = (props) => {
 export default function Index(props) {
   // 记录是否渲染Main，这个变量是为了制作启动网页的时候的淡入效果
   const [showMain, setShowMain] = useState(false);
-  const [mainDisplay, setMainDisplay] = useState(true);
-  const [choice, setChoice] = useState("");
-  const routerChoice = useParams();
   useEffect(() => {
     setShowMain(true);
   }, [showMain]);
+
+  const [mainDisplay, setMainDisplay] = useState(true);
+  const [choice, setChoice] = useState("");
+  const { routerChoice } = useParams();
 
   // 窗口过大的时候通过设置html的fontsize调整页面整体缩放
   useEffect(() => {
@@ -54,7 +54,12 @@ export default function Index(props) {
     }
     if (routerChoice === "regist") {
       setChoice("regist");
+
       setMainDisplay(false);
+    }
+    if (routerChoice === "index") {
+      setChoice("");
+      setMainDisplay(true);
     }
   }, [routerChoice]);
   return (
@@ -70,7 +75,7 @@ export default function Index(props) {
           <SwitchTransition>
             <CSSTransition
               key={mainDisplay === true ? "display" : "indisplay"}
-              classNames="HomeMainAnimation"
+              classNames="FadeInOut"
               timeout={200}
             >
               {/* 如果需要显示main，则显示，否则显示按了四个按钮的界面，这之间的切换通过react-transition-group做 */}

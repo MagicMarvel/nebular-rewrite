@@ -20,8 +20,8 @@ class index extends React.Component {
       <Router>
         <Switch>
           <Route exact path="/">
-            {/* <Redirect to="/home/index" /> */}
-            <Demo />
+            <Redirect to="/home/index" />
+            {/* <Demo /> */}
           </Route>
           <Route exact path="/home">
             <Redirect to="/home/index" />

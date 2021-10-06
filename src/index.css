@@ -18,3 +18,46 @@ html {
     U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
     U+FEFF, U+FFFD;
 }
+
+/* 首页的中间部分出现消失的动画 */
+.FadeInOut-enter {
+  opacity: 0;
+}
+
+.FadeInOut-enter-active {
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.FadeInOut-exit {
+  opacity: 1;
+  width: 100%;
+}
+
+.FadeInOut-exit-active {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* 滑动动画 */
+.Slide-enter {
+  opacity: 0.3;
+  transform: translateY(-100%);
+}
+
+.Slide-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.2s;
+}
+
+.Slide-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.Slide-exit-active {
+  opacity: 0.3;
+  transform: translateY(-100%);
+  transition: transform 0.2s;
+}
