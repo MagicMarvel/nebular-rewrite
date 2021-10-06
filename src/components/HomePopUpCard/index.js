@@ -1,6 +1,8 @@
 import React from "react";
+import { Link, useHistory } from "react-router-dom";
 
 export default function Index(props) {
+  let history = useHistory();
   return (
     <div className="flex items-center justify-center h-full w-full">
       {/* 卡片 */}
@@ -13,9 +15,13 @@ export default function Index(props) {
           {props.title}
         </div>
         {/* 给SVG上特效的div */}
-        <div
+        <Link
+          // to="/home/index"
           className="absolute left-full top-3 -ml-12 cursor-pointer"
-          onClick={() => props.handleClose(true)}
+          onClick={() => {
+            props.handleClose(true);
+            history.goBack();
+          }}
         >
           <svg
             t="1631543331435"
@@ -32,7 +38,7 @@ export default function Index(props) {
               fill="#ffffff"
             ></path>
           </svg>
-        </div>
+        </Link>
         <div className="text-white py-3 px-1">{props.children}</div>
       </div>
     </div>

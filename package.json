@@ -2,6 +2,7 @@
   "name": "nebular",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://sankuyan.cn",
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@pondorasti/remark-img-links": "^1.0.8",
@@ -9,6 +10,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "http-proxy-middleware": "^2.0.1",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "react": "^17.0.2",

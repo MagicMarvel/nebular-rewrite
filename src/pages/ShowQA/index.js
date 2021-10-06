@@ -7,6 +7,7 @@ import {
   GET_ANSWER_BY_ANSWERID,
 } from "../../utils/pathMap";
 import MarkdownParse from "../../components/MarkdownParse";
+import UserCard from "../../components/UserCard";
 
 function AnswerRender(props) {
   const [answer, setAnswer] = useState(undefined);
@@ -26,8 +27,17 @@ function AnswerRender(props) {
   return (
     <div>
       {answer !== undefined && (
-        <div className="border-t my-3">
-          <MarkdownParse noTOC h1NoLine markdown={answer.content} />
+        <div className="flex w-full justify-between">
+          <div className=" border-dotted border-t-2 my-3 mr-8 p-1 flex-grow ">
+            <MarkdownParse noTOC h1NoLine markdown={answer.content} />
+            <div className="float-right">
+              <div className="mt-2">answer at {answer.date}</div>
+              <div className="float-right">by {answer.username}</div>
+            </div>
+          </div>
+          <div className=" hidden my-5 md:flex md:flex-col md:justify-center">
+            <UserCard uid={answer.uid} />
+          </div>
         </div>
       )}
     </div>

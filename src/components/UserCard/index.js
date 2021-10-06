@@ -17,7 +17,7 @@ export default function Index(props) {
     fetch();
   }, [props.uid]);
   return (
-    <div className=" border border-gray-600 my-1 rounded-lg p-3">
+    <div className="inline-block border border-gray-600 my-1 rounded-lg p-3">
       {usrInformation !== undefined && (
         <div>
           {/* 没有头像默认用这个代替 */}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import "./index.css";
+import { Link } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import BriefIntroduction from "../../components/BriefIntroduction";
 import Login from "../../components/Login";
@@ -10,7 +9,7 @@ import Contact from "../../components/Contact";
 const LiBtm = (props) => {
   return (
     <Link
-      to={props.linkTo}
+      to={`${props.linkTo}`}
       className="h-12 w-full border rounded-sm flex items-center justify-center 
       hover:bg-white hover:bg-opacity-5 transition-all duration-300"
       onClick={() => {
@@ -25,15 +24,13 @@ const LiBtm = (props) => {
   );
 };
 
-// 逻辑有点乱，要改
 export default function Index(props) {
   // 记录是否渲染Main，这个变量是为了制作启动网页的时候的淡入效果
-  const [showMain, setShowMain] = useState(false);
+  const [showMain, setshowMain] = useState(false);
   const [mainDisplay, setMainDisplay] = useState(true);
   const [choice, setChoice] = useState("");
-  const routerChoice = useParams();
   useEffect(() => {
-    setShowMain(true);
+    setshowMain(true);
   }, [showMain]);
 
   // 窗口过大的时候通过设置html的fontsize调整页面整体缩放
@@ -44,19 +41,9 @@ export default function Index(props) {
           .width
       ) > 1600
     ) {
-      document.getElementsByTagName("html")[0].style.fontSize = "19px";
+      document.getElementsByTagName("html")[0].style.fontSize = "20px";
     }
   });
-  useEffect(() => {
-    if (routerChoice === "login") {
-      setChoice("login");
-      setMainDisplay(false);
-    }
-    if (routerChoice === "regist") {
-      setChoice("regist");
-      setMainDisplay(false);
-    }
-  }, [routerChoice]);
   return (
     <div>
       {/* 小女孩吉他背景图片 */}
@@ -110,7 +97,7 @@ export default function Index(props) {
                           简介
                         </LiBtm>
                         <LiBtm
-                          linkTo="/home/login"
+                          linkTo="#"
                           choice="login"
                           handleChoiceChange={setChoice}
                           handleClick={setMainDisplay}
@@ -118,7 +105,7 @@ export default function Index(props) {
                           登录
                         </LiBtm>
                         <LiBtm
-                          linkTo="/home/regist"
+                          linkTo="#"
                           choice="regist"
                           handleChoiceChange={setChoice}
                           handleClick={setMainDisplay}

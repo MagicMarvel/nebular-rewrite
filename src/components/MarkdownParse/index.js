@@ -60,7 +60,7 @@ export default function Index(props) {
   return (
     <div className="relative">
       <ReactMarkdown
-        className="w-full"
+        className="w-full text-gray-500"
         // 删去toc字符串
         children={props.markdown.replace("[toc]", "").replace("[TOC]", "")}
         // children={s}

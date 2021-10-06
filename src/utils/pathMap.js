@@ -1,8 +1,10 @@
 // 接口基地址
-export const BASE_URL = "http://sankuyan.cn/api";
+// export const BASE_URL = "http://sankuyan.cn/api";
 
 // 测试用
-// export const BASE_URI = "http://81.71.18.45:5000/";
+// export const BASE_URL = "http://81.71.18.45:5000/";
+
+export const BASE_URL = "http://localhost:3000/api";
 
 // 具体地址
 export const GET_ARTICLE_BY_ID = "/public/article/get";

@@ -99,9 +99,9 @@ export default function Index(props) {
                 {/* 左侧的文章summary */}
                 <div
                   key={item.articleId}
-                  className="border-b border-gray-600 border-dotted pb-2 lg:float-left w-full"
+                  className="border-b border-gray-600 border-dotted pb-2 flex flex-row w-full"
                 >
-                  <div className="inline-block lg:w-4/5">
+                  <div className="inline-block flex-grow mr-5">
                     {/* 文章名 */}
                     <div
                       className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
@@ -116,7 +116,7 @@ export default function Index(props) {
                       </Link>
                     </div>
                     {/* 文章 summary */}
-                    <div className="font-kaiti lg:float-left lg:w-full">
+                    <div className="font-kaiti ">
                       <div className="text-gray-600 select-none">
                         {pureMarkdownToSummary(item.summary)}
                         <Link
@@ -135,19 +135,17 @@ export default function Index(props) {
                           {item.author}
                         </Link>
                       </div>
+                      <div className="clear-both"></div>
                     </div>
-                    {/* 清除发布时间和作者右浮动 */}
-                    <div className="clear-both"></div>{" "}
                   </div>
                   {/* 用户头像和信息卡片 */}
-                  <div className="hidden lg:inline-block lg:float-right">
-                    <UserCard uid={item.uid} />
+                  <div className="">
+                    <div className="hidden lg:block">
+                      {" "}
+                      <UserCard uid={item.uid} />
+                    </div>
                   </div>
                 </div>
-                {/* 显示用户的小框框 */}
-
-                {/* 清除用户卡片的右浮动 */}
-                <div className="clear-both"></div>
               </div>
             );
           })}

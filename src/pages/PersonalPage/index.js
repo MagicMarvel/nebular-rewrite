@@ -5,27 +5,29 @@ import { GET_ARTICLE_LIST } from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
+import { GET_USER, LOGIN } from "../../utils/pathMap";
 
 export default function Index(props) {
   const [articleList, setArticleList] = useState(undefined);
+  const [nowPage, setNowPage] = useState(undefined);
+  const [pageNum, setPageNum] = useState(undefined);
   const [maxPage, setMaxPage] = useState(0);
-  // 向url取得要求访问第几页的articlelist
-  const { pageNum } = useParams();
   useEffect(() => {
-    // console.log(randomMotto());
-    const fetchData = async () => {
-      const res = await Require.get(GET_ARTICLE_LIST, {
-        params: {
-          page: pageNum,
-          size: 5,
-        },
-      });
-      console.log(res);
-      setArticleList(res.data.data.detail);
-      setMaxPage(res.data.data.size);
+    const fetchLogin = async () => {
+      // 已登录状态
+      let res = await Require.get(GET_USER);
+      if (res.data.data.code === 1) {
+        //  登录成功
+        return;
+      }
+      // 尝试无密码登录
+      res = await Require.post(LOGIN);
+      if (res.data.data.code === 1) {
+        //  登录成功
+        return;
+      }
     };
-    fetchData();
-  }, [pageNum]);
+  }, []);
   return (
     <>
       {/* 背景 */}
