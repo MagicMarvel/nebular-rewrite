@@ -39,7 +39,7 @@ html {
   transition: opacity 0.2s;
 }
 
-/* 滑动动画 */
+/* 滑动动画，不完全消失 */
 .Slide-enter {
   opacity: 0.3;
   transform: translateY(-100%);
@@ -60,4 +60,36 @@ html {
   opacity: 0.3;
   transform: translateY(-100%);
   transition: transform 0.2s;
+}
+
+.Slide-exit-done {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* 滑动动画，完全消失 2*/
+.Slide2-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.Slide2-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.2s;
+}
+
+.Slide2-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.Slide2-exit-active {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: transform 0.2s;
+}
+.Slide2-exit-done {
+  opacity: 0;
+  transform: translateY(-100%);
 }

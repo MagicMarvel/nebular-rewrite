@@ -9,9 +9,9 @@ export const BASE_URL = "http://localhost:3000/api";
 // 具体地址
 export const GET_ARTICLE_BY_ID = "/public/article/get";
 export const GET_ARTICLE_LIST = "/public/article/list";
-export const LOGIN = "/public/user/login/";
-export const REGISTER = "/public/user/register/";
-export const LOGOUT = "/public/user/logout/";
+export const LOGIN = "/public/user/login";
+export const REGISTER = "/public/user/register";
+export const LOGOUT = "/public/user/logout";
 export const GET_USER_BY_ID = "/public/user/getUser";
 export const GET_USER = "/user/getUser";
 export const INFO_CHANGE = "/user/infoChange";

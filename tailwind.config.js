@@ -47,6 +47,11 @@ module.exports = {
     extend: {
       // 启用变体
       textColor: ["visited"],
+      translate: ["active", "group-hover"],
+      letterSpacing: ["group-hover"],
+      width: ["group-hover"],
+      height: ["group-hover"],
+      animation: ["hover", "group-hover"],
     },
   },
   // 插件系统，用于引入其他的css样式

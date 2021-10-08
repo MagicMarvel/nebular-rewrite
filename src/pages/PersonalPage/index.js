@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Require from "../../utils/Require";
 import { Link } from "react-router-dom";
-import { GET_ARTICLE_LIST } from "../../utils/pathMap";
+import { GET_ARTICLE_BY_CURRENCY_USER } from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
 import { GET_USER, LOGIN } from "../../utils/pathMap";
 import styled from "styled-components";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import PersonalLogout from "../../components/PersonalLogout";
 
 const SideBar = styled.div`
   margin-top: 1rem;
   margin-bottom: 1rem;
   width: ${(props) => {
-    return props.showSideBar === false ? "0" : "14rem";
+    return props.showSideBar === false ? "0" : "10rem";
   }};
   border-left: ${(props) => {
     return props.showSideBar === false
@@ -53,14 +54,163 @@ const SideBarItem = styled.div`
   }
 `;
 
+function ArticleItem(props) {
+  const [mouseOver, setMouseOver] = useState(false);
+  return (
+    <div
+      className="w-full h-52 border-solid border border-blue-200 my-4 rounded-lg 
+         flex flex-col items-center justify-center transition-all duration-150
+        bg-white bg-opacity-50 text-2xl font-serif hover:shadow-lg group"
+      onMouseEnter={() => setMouseOver(true)}
+      onMouseLeave={() => setMouseOver(false)}
+    >
+      <div
+        // mouseOver={mouseOver}
+        className="group-hover:-translate-y-2 group-hover:tracking-widest transform
+         transition-all duration-150 tracking-wide select-none"
+      >
+        {props.title}
+      </div>
+      <CSSTransition classNames="Slide" timeout={100} in={mouseOver}>
+        <div className="text-sm flex felx-row justify-center font-kaiti">
+          <div
+            className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer 
+          select-none"
+          >
+            修改
+          </div>
+          <div
+            className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer
+          select-none"
+          >
+            删除
+          </div>
+        </div>
+      </CSSTransition>
+    </div>
+  );
+}
+
+function ArticleList(props) {
+  const [persionalArticleList, setPersionalArticleList] = useState(undefined);
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(undefined);
+  const pageRef = useRef(null);
+
+  // useEffect(() => {
+  //   if (pageRef.current !== undefined) pageRef.current.value = 1;
+  // }, [pageRef]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await Require.get(GET_ARTICLE_BY_CURRENCY_USER, {
+        params: {
+          page: page,
+          size: 4,
+        },
+      });
+      console.log("article");
+      console.log(res);
+      if (res.data.code === 1) {
+        setPersionalArticleList(res.data.data.detail);
+        setMaxPage(res.data.data.size);
+        pageRef.current.value = page;
+      } else {
+      }
+    };
+    fetch();
+  }, [page]);
+
+  return (
+    <div className="min-h-screen flex-grow ml-8">
+      {/* 添加文章 */}
+      <div
+        className="w-full h-52 border-dashed border-2 my-4 flex justify-center items-center group
+       hover:bg-white hover:bg-opacity-50 hover:shadow-lg transition-all duration-200 rounded-lg cursor-pointer"
+      >
+        <svg
+          t="1633573403433"
+          className="fill-current text-gray-600 group-hover:animate-pulse"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="1957"
+          width="200"
+          height="200"
+        >
+          <path
+            d="M512 512V170.666667h42.666667v341.333333h341.333333v42.666667h-341.333333v341.333333h-42.666667v-341.333333H170.666667v-42.666667h341.333333z"
+            p-id="1958"
+          ></path>
+        </svg>
+      </div>
+      {persionalArticleList !== undefined ? (
+        <div className="">
+          {/* 列表渲染 */}
+          {persionalArticleList.map((item) => {
+            return (
+              <div key={item.articleId}>
+                <ArticleItem {...item} />
+              </div>
+            );
+          })}
+          {/* 翻页按钮 */}
+          <div className="flex flex-row justify-end ">
+            {/* 上一页 */}
+            <div
+              className="border border-gray-600 w-8 h-6 mx-1 flex justify-center items-center rounded cursor-pointer
+              bg-white bg-opacity-70 hover:shadow-xl hover:bg-blue-300 select-none 
+              transition-all duration-150"
+              onClick={() => {
+                if (page - 1 >= 1)
+                  setPage(() => {
+                    return page - 1;
+                  });
+              }}
+            >
+              <div className="">{"<"}</div>
+            </div>
+            {/* 当前页 */}
+            <input
+              ref={pageRef}
+              className=" bg-opacity-0 w-6 h-6 flex justify-center items-center text-center"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (e.target.value <= maxPage) setPage(e.target.value);
+                }
+              }}
+            />
+            {/* 最大页 */}
+            <div className="  w-6 h-6  flex justify-center items-center">
+              /{maxPage}
+            </div>
+            {/* 下一页 */}
+            <div
+              className="border border-gray-600 w-8 h-6 mx-1 flex justify-center items-center rounded 
+              cursor-pointer bg-white bg-opacity-70 hover:shadow-xl hover:bg-blue-300 select-none 
+              transition-all duration-150"
+              onClick={() => {
+                if (page + 1 <= maxPage)
+                  setPage(() => {
+                    return page + 1;
+                  });
+              }}
+            >
+              <div className="">{">"}</div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>你好像没有发布文章哦</div>
+      )}
+    </div>
+  );
+}
+
 export default function Index(props) {
-  const [articleList, setArticleList] = useState(undefined);
-  const [nowPage, setNowPage] = useState(undefined);
-  const [pageNum, setPageNum] = useState(undefined);
-  const [maxPage, setMaxPage] = useState(0);
   const [usrInformation, setUsrInformation] = useState(undefined);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [sideBarChoice, setSideBarChoice] = useState("article");
+  const [sideBarChoice, setSideBarChoice] = useState("logout");
 
   // 检查是否登录
   useEffect(() => {
@@ -78,7 +228,7 @@ export default function Index(props) {
           // 这里不应该能进来，因为获取不到当前用户应该是403
         }
       } catch (e) {
-        console.log(e);
+        console.log("无法获得当前用户信息，尝试使用cookie自动登录");
         // 尝试无密码登录
         const res = await Require.post(LOGIN);
         if (res.data.code === 1) {
@@ -206,7 +356,7 @@ export default function Index(props) {
             </svg>
           </div>
         </div>
-        {/* 侧边栏 */}
+        {/* 侧边栏，手机端 */}
         <SideBar
           showSideBar={showSideBar}
           className="lg:hidden bg-opacity-50 ml-1 fixed top-0 h-screen z-10
@@ -247,6 +397,7 @@ export default function Index(props) {
           </SideBarItem>
           <div className=""></div>
         </SideBar>
+        {/* 桌面版侧边栏（sticky） */}
         <div className="relative flex flex-row justify-between">
           {/* 侧边栏 */}
           <SideBar
@@ -292,10 +443,9 @@ export default function Index(props) {
           {/* 内容 */}
           <SwitchTransition>
             <CSSTransition key={sideBarChoice} classNames="Slide" timeout={200}>
-              <div className="bg-red-600 h-screen w-full">
-                {/* 右边的主栏 */}
-                <div className=""></div>
-              </div>
+              {/* 渲染article部分 */}
+              {sideBarChoice === "article" && <ArticleList />}
+              {sideBarChoice === "logout" && <PersonalLogout />}
             </CSSTransition>
           </SwitchTransition>
         </div>
