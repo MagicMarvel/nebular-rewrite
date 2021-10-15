@@ -6,6 +6,12 @@ html {
   scroll-behavior: smooth;
 }
 
+.clearfix::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
 /* latin */
 @font-face {
   font-family: "Playball";
@@ -37,6 +43,10 @@ html {
 .FadeInOut-exit-active {
   opacity: 0;
   transition: opacity 0.2s;
+}
+
+.FadeInOut-exit-done {
+  opacity: 0;
 }
 
 /* 滑动动画，不完全消失 */
@@ -92,4 +102,35 @@ html {
 .Slide2-exit-done {
   opacity: 0;
   transform: translateY(-100%);
+}
+
+/* 滑动动画、横向移动 2*/
+.SlideX-enter {
+  /* opacity: 0; */
+  transform: translateX(100%);
+}
+
+.SlideX-enter-active {
+  /* opacity: 1; */
+  transform: translateX(0);
+  transition: all 0.1s ease-out;
+}
+
+.SlideX-enter-done {
+  /* opacity: 1; */
+}
+
+.SlideX-exit {
+  /* opacity: 1; */
+  transform: translateX(0);
+}
+
+.SlideX-exit-active {
+  /* opacity: 0; */
+  transform: translateX(-100%);
+  transition: all 0.1s ease-out;
+}
+.SlideX-exit-done {
+  /* opacity: 0; */
+  transform: translateX(-100%);
 }

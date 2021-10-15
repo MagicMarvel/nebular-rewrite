@@ -6,9 +6,15 @@ import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
 import { GET_USER, LOGIN } from "../../utils/pathMap";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
+import {
+  CSSTransition,
+  SwitchTransition,
+  Transition,
+} from "react-transition-group";
 import PersonalLogout from "../../components/PersonalLogout";
+import MarkdownEditor from "../../components/MarkdownEditor";
 
 const SideBar = styled.div`
   margin-top: 1rem;
@@ -97,10 +103,6 @@ function ArticleList(props) {
   const [maxPage, setMaxPage] = useState(undefined);
   const pageRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (pageRef.current !== undefined) pageRef.current.value = 1;
-  // }, [pageRef]);
-
   useEffect(() => {
     const fetch = async () => {
       const res = await Require.get(GET_ARTICLE_BY_CURRENCY_USER, {
@@ -127,6 +129,7 @@ function ArticleList(props) {
       <div
         className="w-full h-52 border-dashed border-2 my-4 flex justify-center items-center group
        hover:bg-white hover:bg-opacity-50 hover:shadow-lg transition-all duration-200 rounded-lg cursor-pointer"
+        onClick={props.showEditor}
       >
         <svg
           t="1633573403433"
@@ -208,9 +211,11 @@ function ArticleList(props) {
 }
 
 export default function Index(props) {
+  const history = useHistory();
   const [usrInformation, setUsrInformation] = useState(undefined);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [sideBarChoice, setSideBarChoice] = useState("logout");
+  const [sideBarChoice, setSideBarChoice] = useState("article");
+  const [showMarkdownEditor, setShowMarkdownEditor] = useState(false);
 
   // 检查是否登录
   useEffect(() => {
@@ -237,11 +242,12 @@ export default function Index(props) {
           return;
         } else {
           console.log("password login fail");
+          history.push("/home/login");
         }
       }
     };
     fetchLogin();
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     switch (sideBarChoice) {
@@ -258,7 +264,7 @@ export default function Index(props) {
         console.log("logout");
         break;
       default:
-        console.log("personalPage got a default case，this is a wrong");
+        console.log("personalPage got a default case，that is a wrong");
     }
   }, [sideBarChoice]);
 
@@ -266,6 +272,15 @@ export default function Index(props) {
     <>
       {/* 背景 */}
       <div className="bg-sky h-screen w-screen bg-center fixed inset-0 -z-10" />
+      <CSSTransition
+        in={showMarkdownEditor === true ? true : false}
+        classNames="FadeInOut"
+        timeout={200}
+        unmountOnExit
+      >
+        <MarkdownEditor close={setShowMarkdownEditor} />
+      </CSSTransition>
+
       {/* 白色大卡片 */}
       <div className="relative bg-gray-200 bg-opacity-80 p-10 rounded-3xl md:w-11/12 md:mx-auto md:my-10">
         {/* 博客标题副标题导航栏 */}
@@ -397,9 +412,8 @@ export default function Index(props) {
           </SideBarItem>
           <div className=""></div>
         </SideBar>
-        {/* 桌面版侧边栏（sticky） */}
         <div className="relative flex flex-row justify-between">
-          {/* 侧边栏 */}
+          {/* 侧边栏\桌面版侧边栏（sticky）*/}
           <SideBar
             showSideBar={showSideBar}
             className=" bg-opacity-50 ml-1 hidden lg:sticky top-16 h-screen 
@@ -443,9 +457,17 @@ export default function Index(props) {
           {/* 内容 */}
           <SwitchTransition>
             <CSSTransition key={sideBarChoice} classNames="Slide" timeout={200}>
-              {/* 渲染article部分 */}
-              {sideBarChoice === "article" && <ArticleList />}
-              {sideBarChoice === "logout" && <PersonalLogout />}
+              <div className="w-full">
+                {/* 渲染article部分 */}
+                {sideBarChoice === "article" && (
+                  <ArticleList
+                    showEditor={() => {
+                      setShowMarkdownEditor(true);
+                    }}
+                  />
+                )}
+                {sideBarChoice === "logout" && <PersonalLogout />}
+              </div>
             </CSSTransition>
           </SwitchTransition>
         </div>

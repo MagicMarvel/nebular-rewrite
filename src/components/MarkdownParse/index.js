@@ -52,17 +52,21 @@ www.example.com, https://example.com, and contact@example.com.
 * [x] done
 `;
 
-// 为了目录的绝对定位，上一层组件需要设置为relative
 // 输入：markdown，传入noTOC可以不渲染TOC，传入h1NoLine可关闭h1标签下面的横线
 // TODO:增强目录的效果
 export default function Index(props) {
   const { h1NoLine } = props;
   return (
+    // 为了目录的绝对定位，需要设置为relative
     <div className="relative">
       <ReactMarkdown
         className="w-full text-gray-500"
         // 删去toc字符串
-        children={props.markdown.replace("[toc]", "").replace("[TOC]", "")}
+        children={
+          props.markdown !== undefined
+            ? props.markdown.replace("[toc]", "").replace("[TOC]", "")
+            : ""
+        }
         // children={s}
         remarkPlugins={[
           remarkMath,
@@ -146,7 +150,7 @@ export default function Index(props) {
           ),
           p: ({ node, ...props }) => (
             <p
-              className="text-gray-500 font-kaiti text-sm lg:text-base mt-4 break-words leading-relaxed"
+              className="text-gray-500 font-kaiti text-sm lg:text-base mb-4 break-words leading-relaxed"
               {...props}
             >
               {props.children}

@@ -2,7 +2,8 @@
   "name": "nebular",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://sankuyan.cn",
+  "homepage": "./.",
+  "proxy": "http://www.sankuyan.cn",
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@pondorasti/remark-img-links": "^1.0.8",
