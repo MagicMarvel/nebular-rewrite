@@ -1,7 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Require from "../../utils/Require";
 import { Link } from "react-router-dom";
-import { GET_ARTICLE_BY_CURRENCY_USER } from "../../utils/pathMap";
+import {
+  GET_ARTICLE_BY_CURRENCY_USER,
+  DELETE_ARTICLEL_BY_ID,
+} from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
@@ -14,7 +17,9 @@ import {
   Transition,
 } from "react-transition-group";
 import PersonalLogout from "../../components/PersonalLogout";
+import PersonalInformation from "../../components/PersonalInformation";
 import MarkdownEditor from "../../components/MarkdownEditor";
+import { ToastContext } from "../../App";
 
 const SideBar = styled.div`
   margin-top: 1rem;
@@ -62,6 +67,21 @@ const SideBarItem = styled.div`
 
 function ArticleItem(props) {
   const [mouseOver, setMouseOver] = useState(false);
+  const toastController = useContext(ToastContext);
+  const history = useHistory();
+  const handleDeleteArticle = async () => {
+    console.log("delete article");
+    const res = await Require.post(DELETE_ARTICLEL_BY_ID, {
+      articleId: props.articleId,
+    });
+    if (res.data.code === 1) {
+      toastController({ mes: "删除成功，请刷新页面", timeout: 1500 });
+    } else
+      toastController({
+        mes: "删除失败，若你反复遇到该问题，请联系管理员",
+        timeout: 3000,
+      });
+  };
   return (
     <div
       className="w-full h-52 border-solid border border-blue-200 my-4 rounded-lg 
@@ -70,13 +90,13 @@ function ArticleItem(props) {
       onMouseEnter={() => setMouseOver(true)}
       onMouseLeave={() => setMouseOver(false)}
     >
-      <div
-        // mouseOver={mouseOver}
+      <Link
         className="group-hover:-translate-y-2 group-hover:tracking-widest transform
-         transition-all duration-150 tracking-wide select-none"
+         transition-all duration-150 tracking-wide select-none font-kaiti"
+        to={`/article/${props.articleId}`}
       >
         {props.title}
-      </div>
+      </Link>
       <CSSTransition classNames="Slide" timeout={100} in={mouseOver}>
         <div className="text-sm flex felx-row justify-center font-kaiti">
           <div
@@ -88,6 +108,7 @@ function ArticleItem(props) {
           <div
             className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer
           select-none"
+            onClick={handleDeleteArticle}
           >
             删除
           </div>
@@ -111,8 +132,6 @@ function ArticleList(props) {
           size: 4,
         },
       });
-      console.log("article");
-      console.log(res);
       if (res.data.code === 1) {
         setPersionalArticleList(res.data.data.detail);
         setMaxPage(res.data.data.size);
@@ -214,8 +233,10 @@ export default function Index(props) {
   const history = useHistory();
   const [usrInformation, setUsrInformation] = useState(undefined);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [sideBarChoice, setSideBarChoice] = useState("article");
+  const [markdownInput, setMarkdownInput] = useState("");
+  const [sideBarChoice, setSideBarChoice] = useState("information");
   const [showMarkdownEditor, setShowMarkdownEditor] = useState(false);
+  const toastController = useContext(ToastContext);
 
   // 检查是否登录
   useEffect(() => {
@@ -223,14 +244,13 @@ export default function Index(props) {
       // 判断是否是已登录状态
       try {
         const res = await Require.get(GET_USER);
-        console.log(res);
         if (res.data.code === 1) {
           //  登录成功
           console.log("session login success");
+          console.log(res.data.data);
           setUsrInformation(res.data.data);
-          return;
         } else {
-          // 这里不应该能进来，因为获取不到当前用户应该是403
+          // 这里不应该能进来，因为获取不到当前用户应该是403,403axios报异常
         }
       } catch (e) {
         console.log("无法获得当前用户信息，尝试使用cookie自动登录");
@@ -239,15 +259,22 @@ export default function Index(props) {
         if (res.data.code === 1) {
           //  登录成功
           console.log("password login success");
-          return;
+          const res = await Require.get(GET_USER);
+          setUsrInformation(res.data.data);
         } else {
           console.log("password login fail");
-          history.push("/home/login");
+          toastController({
+            mes: "您还没有登录，一秒后跳转至登录界面",
+            timeout: 1000,
+          });
+          setTimeout(() => {
+            history.push("/home/login");
+          }, 1000);
         }
       }
     };
     fetchLogin();
-  }, [history]);
+  }, [history, toastController]);
 
   useEffect(() => {
     switch (sideBarChoice) {
@@ -278,7 +305,10 @@ export default function Index(props) {
         timeout={200}
         unmountOnExit
       >
-        <MarkdownEditor close={setShowMarkdownEditor} />
+        <MarkdownEditor
+          close={setShowMarkdownEditor}
+          markdownInput={markdownInput}
+        />
       </CSSTransition>
 
       {/* 白色大卡片 */}
@@ -467,6 +497,9 @@ export default function Index(props) {
                   />
                 )}
                 {sideBarChoice === "logout" && <PersonalLogout />}
+                {sideBarChoice === "information" && (
+                  <PersonalInformation usrInformation={usrInformation} />
+                )}
               </div>
             </CSSTransition>
           </SwitchTransition>

@@ -29,3 +29,6 @@ export const POST_NEW_QUESTION = "/question/post";
 export const GET_ANSWER_BY_QUESTIONID = "/public/answer/list";
 export const POST_ANSWER = "/answer/post";
 export const GET_ANSWER_BY_ANSWERID = "/public/answer/get";
+export function getUsrPhoto(username) {
+  return `http://localhost:3000/user/${username}/ProfilePhoto.jpg`;
+}

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import BriefIntroduction from "../../components/BriefIntroduction";
 import Login from "../../components/Login";
 import Regist from "../../components/Regist";
 import Contact from "../../components/Contact";
-
+import { ToastContext } from "../../App";
+import Require from "../../utils/Require";
+import { GET_USER, LOGIN, getUsrPhoto } from "../../utils/pathMap";
+import { useHistory } from "react-router-dom";
 const LiBtm = (props) => {
   return (
     <Link
@@ -32,9 +35,13 @@ export default function Index(props) {
     setShowMain(true);
   }, [showMain]);
 
+  const history = useHistory();
+  const toastController = useContext(ToastContext);
+
   const [mainDisplay, setMainDisplay] = useState(true);
   const [choice, setChoice] = useState("");
   const { routerChoice } = useParams();
+  const [usrInformation, setUsrInformation] = useState(undefined);
 
   // 窗口过大的时候通过设置html的fontsize调整页面整体缩放
   useEffect(() => {
@@ -47,6 +54,7 @@ export default function Index(props) {
       document.getElementsByTagName("html")[0].style.fontSize = "19px";
     }
   });
+
   useEffect(() => {
     if (routerChoice === "login") {
       setChoice("login");
@@ -54,7 +62,6 @@ export default function Index(props) {
     }
     if (routerChoice === "regist") {
       setChoice("regist");
-
       setMainDisplay(false);
     }
     if (routerChoice === "index") {
@@ -62,6 +69,44 @@ export default function Index(props) {
       setMainDisplay(true);
     }
   }, [routerChoice]);
+
+  // 尝试登录
+  useEffect(() => {
+    const fetchLogin = async () => {
+      // 判断是否是已登录状态
+      try {
+        const res = await Require.get(GET_USER);
+        if (res.data.code === 1) {
+          //  登录成功
+          console.log("session login success");
+          toastController({
+            mes: `欢迎回来 ${res.data.data.username}`,
+            timeout: 1500,
+          });
+          setUsrInformation(res.data.data);
+        } else {
+          // 这里不应该能进来，因为获取不到当前用户应该是403,403axios报异常
+        }
+      } catch (e) {
+        console.log("无法获得当前用户信息，尝试使用cookie自动登录");
+        // 尝试无密码登录
+        const res = await Require.post(LOGIN);
+        if (res.data.code === 1) {
+          //  登录成功
+          console.log("password login success");
+          const res = await Require.get(GET_USER);
+          toastController({
+            mes: `欢迎回来 ${res.data.data.username}`,
+            timeout: 1500,
+          });
+          setUsrInformation(res.data.data);
+        } else {
+          console.log("password login fail");
+        }
+      }
+    };
+    fetchLogin();
+  }, [toastController, history]);
   return (
     <div>
       {/* 小女孩吉他背景图片 */}
@@ -87,7 +132,21 @@ export default function Index(props) {
                   {/* container */}
                   <div className="flex flex-col items-center ">
                     {/* logo */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border "></div>
+                    <Link
+                      className="w-16 h-16 sm:w-20 sm:h-20 border rounded-full hover:rotate-180 
+                    transition-all transform duration-300 cursor-pointer"
+                      to="/personalPage"
+                    >
+                      {usrInformation !== undefined ? (
+                        <img
+                          className="rounded-full "
+                          src={getUsrPhoto(usrInformation.username)}
+                          alt="头像"
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Link>
                     <div className="h-14 border-l"></div>
                     {/* 用户信息，Main部分 */}
                     <div
@@ -95,12 +154,24 @@ export default function Index(props) {
                         showMain === false ? "h-0 p-0" : "h-auto p-10"
                       }`}
                     >
-                      <div className="text-4xl font-semibold text-white leading-snug mb-2 text-center tracking-wider">
-                        Nebular
-                      </div>
-                      <div className="text-sm text-white text-center tracking-wide">
-                        致一路热爱的你
-                      </div>
+                      {usrInformation === undefined ? (
+                        <div>
+                          <div className="text-4xl font-semibold text-white leading-snug mb-2 text-center tracking-wider">
+                            Nebular
+                          </div>
+                          <div className="text-sm text-white text-center tracking-wide">
+                            致一路热爱的你
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-gray-100 text-xl">
+                          <span className="">用户：</span>
+                          <code className="bg-gray-900 bg-opacity-60 px-3 rounded">
+                            {usrInformation.username}
+                          </code>
+                          <span className="">，欢迎回来</span>
+                        </div>
+                      )}
                     </div>
                     {/* 按钮 */}
                     <div className="h-14 relative border-l"></div>
@@ -114,22 +185,47 @@ export default function Index(props) {
                         >
                           简介
                         </LiBtm>
-                        <LiBtm
-                          linkTo="/home/login"
-                          choice="login"
-                          handleChoiceChange={setChoice}
-                          handleClick={setMainDisplay}
-                        >
-                          登录
-                        </LiBtm>
-                        <LiBtm
-                          linkTo="/home/regist"
-                          choice="regist"
-                          handleChoiceChange={setChoice}
-                          handleClick={setMainDisplay}
-                        >
-                          注册
-                        </LiBtm>
+                        {usrInformation === undefined ? (
+                          <LiBtm
+                            linkTo="/home/login"
+                            choice="login"
+                            handleChoiceChange={setChoice}
+                            handleClick={setMainDisplay}
+                          >
+                            登录
+                          </LiBtm>
+                        ) : (
+                          <Link
+                            className="h-12 w-full border rounded-sm flex items-center justify-center 
+                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
+                            to="/articleList/1"
+                          >
+                            <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
+                              文章
+                            </p>
+                          </Link>
+                        )}
+                        {usrInformation === undefined ? (
+                          <LiBtm
+                            linkTo="/home/regist"
+                            choice="regist"
+                            handleChoiceChange={setChoice}
+                            handleClick={setMainDisplay}
+                          >
+                            注册
+                          </LiBtm>
+                        ) : (
+                          <Link
+                            className="h-12 w-full border rounded-sm flex items-center justify-center 
+                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
+                            to="/QAList/1"
+                          >
+                            <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
+                              问答
+                            </p>
+                          </Link>
+                        )}
+
                         <LiBtm
                           linkTo="#"
                           choice="contact"

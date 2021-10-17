@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import HomePopUpCard from "../HomePopUpCard";
 import Require from "../../utils/Require";
 import { REGISTER } from "../../utils/pathMap";
 import { useHistory } from "react-router-dom";
-import Toast from "../../components/Toast";
+import { ToastContext } from "../../App";
 
 export default function Index(props) {
   const UsrName = useRef(null);
@@ -13,6 +13,7 @@ export default function Index(props) {
   const history = useHistory();
   const [toastShow, setToastShow] = useState(false);
   const [toastMes, setToastMes] = useState(undefined);
+  const toastController = useContext(ToastContext);
 
   const regist = () => {
     setToastShow(false);
@@ -25,12 +26,15 @@ export default function Index(props) {
       });
       console.log(res);
       if (res.data.code === 1) {
-        setToastShow(true);
-        setToastMes("注册成功");
-        history.goBack();
+        toastController({ mes: "注册成功", timeout: 1000 });
+        setTimeout(() => {
+          history.goBack();
+        }, 1000);
       } else {
-        setToastShow(true);
-        setToastMes("注册失败，若反复遇到该错误，请联系管理员");
+        toastController({
+          mes: "注册失败，若反复遇到该错误，请联系管理员",
+          timeout: 3000,
+        });
       }
     };
     fetch();
@@ -38,7 +42,6 @@ export default function Index(props) {
 
   return (
     <HomePopUpCard smallCard handleClose={props.handleClose} title="注册">
-      <Toast mes={toastMes} show={toastShow} top="20%" keepTime={2000} />
       <div className="p-3">
         <lable htmlFor="usrName" className="w-20 inline-block">
           用户名：

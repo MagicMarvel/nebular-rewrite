@@ -1,24 +1,34 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import MarkdownParse from "../MarkdownParse";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import Require from "../../utils/Require";
 import { UPLOAD_IMAGE, POST_NEW_ARTICLE } from "../../utils/pathMap";
+import { ToastContext } from "../../App";
+import { useHistory } from "react-router-dom";
 
+// TODO:添加修改文章的功能
+/**
+ *
+ * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close,传入markdownInput作为默认的文章内容
+ * @returns
+ */
 export default function Index(props) {
   const [markdownInput, setMarkdownInput] = useState("");
   const [showMarkdown, setShowMarkdown] = useState(false);
   const [imageFileName, setImageFileName] = useState("");
   const [title, setTitle] = useState("");
   const markdownInputArea = useRef(null);
+  const toastController = useContext(ToastContext);
+  const history = useHistory();
 
   const handleInput = (event) => {
     setMarkdownInput(event.target.value);
   };
 
+  // 处理图片上传的点击事件
   const handlePhotoUpload = async (event) => {
     // 如果图片上传成功
-    // console.log(event);
-    if (event.target.files !== undefined) {
+    if (event.target.files.length !== 0) {
       const file = event.target.files[0];
       setImageFileName(file.name || "");
 
@@ -26,30 +36,44 @@ export default function Index(props) {
       let param = new FormData();
       param.append("file", file, file.name);
       const res = await Require.post(UPLOAD_IMAGE, param, undefined);
+      if (res.data.code === 1) {
+        // 获取光标初始索引
+        let insert = markdownInputArea.current.selectionStart;
 
-      // 获取光标初始索引
-      let insert = markdownInputArea.current.selectionStart;
-
-      // 拼接字符串的形式来得到需要的内容
-      setMarkdownInput(
-        markdownInputArea.current.value.substr(0, insert) +
-          `![](${res.data.data})` +
-          markdownInputArea.current.value.substr(insert)
-      );
+        // 拼接字符串的形式来得到需要的内容
+        setMarkdownInput(
+          markdownInputArea.current.value.substr(0, insert) +
+            `![](${res.data.data})` +
+            markdownInputArea.current.value.substr(insert)
+        );
+        toastController({ mes: "图片上传成功", timeout: 500 });
+      } else toastController({ mes: "图片上传失败", timeout: 2000 });
     } else {
-      console.log("图片上传被取消");
+      toastController({ mes: "图片上传失败", timeout: 2000 });
     }
   };
 
+  // 处理文章上传的点击事件
   const handleSubmit = () => {
     const fetchData = async () => {
       const res = await Require.post(POST_NEW_ARTICLE, {
         title: title,
         content: markdownInput,
       });
-      console.log(res);
+      if (res.data.code === 1) {
+        toastController({ timeout: 2000, mes: "发布成功" });
+        setTimeout(() => {
+          props.close();
+        }, 2000);
+      } else
+        toastController({
+          timeout: 3000,
+          mes: "发布失败，若反复遇到该问题，请联系管理员",
+        });
     };
-    fetchData();
+    if (markdownInput.length <= 5)
+      toastController({ timeout: 1500, mes: "内容太短啦，至少5个字符哦" });
+    else fetchData();
   };
 
   return (

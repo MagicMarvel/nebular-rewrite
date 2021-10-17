@@ -17,7 +17,10 @@ export default function Index(props) {
     fetch();
   }, [props.uid]);
   return (
-    <div className="inline-block border border-gray-600 my-1 rounded-lg p-3">
+    <div
+      className="inline-block  border-blue-400 my-1 rounded-lg p-3 bg-white bg-opacity-60 shadow-xl 
+    transition-all transform hover:-translate-y-2 hover:rotate-2 hover:shadow-2xl cursor-pointer select-none"
+    >
       {usrInformation !== undefined && (
         <div>
           {/* 没有头像默认用这个代替 */}

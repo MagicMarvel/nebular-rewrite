@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Require from "../../utils/Require";
 import { LOGOUT } from "../../utils/pathMap";
-import Toast from "../../components/Toast";
+import { ToastContext } from "../../App";
 import { useHistory } from "react-router-dom";
 
 export default function Index() {
-  const [toastShow, setToastShow] = useState(false);
-  const [mes, setMes] = useState("");
   const history = useHistory();
+  const toastController = useContext(ToastContext);
   const logout = async () => {
     const res = await Require.post(LOGOUT);
     console.log(res);
     if (res.data.code === 1) {
-      setMes("注销成功");
-      setToastShow(true);
-
+      toastController({ mes: "注销成功", timeout: 2000 });
       setTimeout(() => {
         history.push("/");
       }, 2000);
-      setToastShow(false);
     }
   };
   return (
     <div className="flex-grow min-h-screen flex flex-col justify-around items-center">
-      <Toast mes={mes} show={toastShow} />
       <div className="w-full md:w-60 h-20 rounded text-center border">
         <div
           className="h-full flex justify-center items-center text-2xl font-bold bg-white bg-opacity-25
