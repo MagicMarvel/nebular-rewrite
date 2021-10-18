@@ -31,7 +31,7 @@ class Index extends React.Component {
   render() {
     const { maxPage, nowPage, type, param } = this.props;
     return (
-      <div>
+      <div className="select-none">
         {/* 如果用户要求访问比最大页数还要多的页面，不显示该分页按钮，只有一页的也不显示*/}
         {nowPage <= maxPage && maxPage >= 2 && (
           <div

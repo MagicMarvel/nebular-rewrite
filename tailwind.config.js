@@ -53,6 +53,8 @@ module.exports = {
       height: ["group-hover"],
       animation: ["hover", "group-hover"],
       ringWidth: ["hover"],
+      rotate: ["group-hover"],
+      display: ["group-hover"],
     },
   },
   // 插件系统，用于引入其他的css样式

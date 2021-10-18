@@ -104,7 +104,8 @@ export default function Index(props) {
               />
             ) : (
               <code
-                className={`${className} inline-block font-kaiti text-sm lg:text-base text-gray-500 rounded bg-gray-400 bg-opacity-30 px-1.5`}
+                className={`${className} inline-block font-kaiti text-sm lg:text-base 
+                text-gray-500 rounded bg-gray-400 bg-opacity-30 px-1.5 w-full py-1 break-all`}
                 {...props}
               >
                 {children}
@@ -150,7 +151,7 @@ export default function Index(props) {
           ),
           p: ({ node, ...props }) => (
             <p
-              className="text-gray-500 font-kaiti text-sm lg:text-base mb-4 break-words leading-relaxed"
+              className="text-gray-500 font-kaiti text-sm lg:text-base mb-4 break-all leading-relaxed"
               {...props}
             >
               {props.children}
@@ -158,7 +159,7 @@ export default function Index(props) {
           ),
           blockquote: ({ node, ...props }) => (
             <blockquote
-              className="font-kaiti border-gray-600 border-l-3 border-t border-b pb-4 pl-5 my-1"
+              className="font-kaiti border-gray-600 border-l-3 border-t border-b  pl-5 my-1"
               {...props}
             >
               {props.children}

@@ -51,13 +51,13 @@ export default function Index(props) {
           <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
             <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
               <Link
-                to="#"
+                to="/"
                 className="hover:text-purple-600 transform transition-all"
               >
                 首页
               </Link>
               <Link
-                to="#"
+                to="/personalPage"
                 className="hover:text-purple-600 transform transition-all"
               >
                 个人

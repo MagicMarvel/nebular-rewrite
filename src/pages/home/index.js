@@ -44,16 +44,16 @@ export default function Index(props) {
   const [usrInformation, setUsrInformation] = useState(undefined);
 
   // 窗口过大的时候通过设置html的fontsize调整页面整体缩放
-  useEffect(() => {
-    if (
-      parseInt(
-        window.getComputedStyle(document.getElementById("homeBackGround"), null)
-          .width
-      ) > 1600
-    ) {
-      document.getElementsByTagName("html")[0].style.fontSize = "19px";
-    }
-  });
+  // useEffect(() => {
+  //   if (
+  //     parseInt(
+  //       window.getComputedStyle(document.getElementById("homeBackGround"), null)
+  //         .width
+  //     ) > 1600
+  //   ) {
+  //     document.getElementsByTagName("html")[0].style.fontSize = "19px";
+  //   }
+  // });
 
   useEffect(() => {
     if (routerChoice === "login") {
@@ -106,7 +106,8 @@ export default function Index(props) {
       }
     };
     fetchLogin();
-  }, [toastController, history]);
+  }, [toastController, history.location]);
+
   return (
     <div>
       {/* 小女孩吉他背景图片 */}

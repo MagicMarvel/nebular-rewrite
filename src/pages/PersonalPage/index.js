@@ -20,6 +20,8 @@ import PersonalLogout from "../../components/PersonalLogout";
 import PersonalInformation from "../../components/PersonalInformation";
 import MarkdownEditor from "../../components/MarkdownEditor";
 import { ToastContext } from "../../App";
+import PersonalShowQA from "../../components/PersonalShowQA";
+import MarkdownEditorForQuestion from "../../components/MarkdownEditorForQuestion";
 
 const SideBar = styled.div`
   margin-top: 1rem;
@@ -102,6 +104,7 @@ function ArticleItem(props) {
           <div
             className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer 
           select-none"
+            // onClick={()=>props.handleEditArticle()}
           >
             修改
           </div>
@@ -234,9 +237,10 @@ export default function Index(props) {
   const [usrInformation, setUsrInformation] = useState(undefined);
   const [showSideBar, setShowSideBar] = useState(false);
   const [markdownInput, setMarkdownInput] = useState("");
-  const [sideBarChoice, setSideBarChoice] = useState("information");
+  const [sideBarChoice, setSideBarChoice] = useState("article");
   const [showMarkdownEditor, setShowMarkdownEditor] = useState(false);
   const toastController = useContext(ToastContext);
+  const [showMarkdownEditorForQa, setShowMarkdownEditorForQa] = useState(false);
 
   // 检查是否登录
   useEffect(() => {
@@ -311,6 +315,18 @@ export default function Index(props) {
         />
       </CSSTransition>
 
+      <CSSTransition
+        in={showMarkdownEditorForQa}
+        classNames="FadeInOut"
+        timeout={200}
+        unmountOnExit
+      >
+        <MarkdownEditorForQuestion
+          close={() => setShowMarkdownEditorForQa(false)}
+          markdownInput={markdownInput}
+        />
+      </CSSTransition>
+
       {/* 白色大卡片 */}
       <div className="relative bg-gray-200 bg-opacity-80 p-10 rounded-3xl md:w-11/12 md:mx-auto md:my-10">
         {/* 博客标题副标题导航栏 */}
@@ -332,25 +348,25 @@ export default function Index(props) {
           <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
             <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
               <Link
-                to="#"
+                to="/"
                 className="hover:text-purple-600 transform transition-all"
               >
                 首页
               </Link>
               <Link
-                to="#"
+                to="/personalPage"
                 className="hover:text-purple-600 transform transition-all"
               >
                 个人
               </Link>
               <Link
-                to="#"
+                to="/articleList/1"
                 className="hover:text-purple-600 transform transition-all"
               >
                 文章
               </Link>
               <Link
-                to="#"
+                to="/QAList/1"
                 className="hover:text-purple-600 transform transition-all"
               >
                 问答
@@ -493,6 +509,15 @@ export default function Index(props) {
                   <ArticleList
                     showEditor={() => {
                       setShowMarkdownEditor(true);
+                    }}
+                  />
+                )}
+                {sideBarChoice === "QA" && (
+                  <PersonalShowQA
+                    showEditorForQA={() => {
+                      setShowMarkdownEditorForQa(true);
+                      console.log("post QA");
+                      console.log(showMarkdownEditorForQa);
                     }}
                   />
                 )}

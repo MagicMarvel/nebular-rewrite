@@ -59,7 +59,7 @@ export default function Index(props) {
                 首页
               </Link>
               <Link
-                to="/persionalPage"
+                to="/personalPage"
                 className="hover:text-purple-600 transform transition-all"
               >
                 个人
@@ -117,7 +117,7 @@ export default function Index(props) {
                     </div>
                     {/* 文章 summary */}
                     <div className="font-kaiti ">
-                      <div className="text-gray-600 select-none">
+                      <div className="text-gray-600 select-none break-all">
                         {pureMarkdownToSummary(item.summary)}
                         <Link
                           to={`/article/${item.articleId}`}

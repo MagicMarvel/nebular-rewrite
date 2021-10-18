@@ -8,6 +8,9 @@ import {
 } from "../../utils/pathMap";
 import MarkdownParse from "../../components/MarkdownParse";
 import UserCard from "../../components/UserCard";
+import SubmitButton from "../../components/SubmitButton";
+import MarkdownEditorForAnswer from "../../components/MarkdownEditorForAnswer";
+import { CSSTransition } from "react-transition-group";
 
 function AnswerRender(props) {
   const [answer, setAnswer] = useState(undefined);
@@ -27,15 +30,15 @@ function AnswerRender(props) {
   return (
     <div>
       {answer !== undefined && (
-        <div className="flex w-full justify-between">
-          <div className=" border-dotted border-t-2 my-3 mr-8 p-1 flex-grow ">
+        <div className="flex border-t-2 border-dotted border-blue-300 w-full justify-between">
+          <div className=" my-1 mr-3 md:mr-8 p-1 flex-grow  mb-5">
             <MarkdownParse noTOC h1NoLine markdown={answer.content} />
-            <div className="float-right">
-              <div className="mt-2">answer at {answer.date}</div>
-              <div className="float-right">by {answer.username}</div>
+            <div className="float-right text-gray-400 text-base font-kaiti mt-3">
+              <span className="mr-2">answer at {answer.date}</span>
+              <span className="">by {answer.username}</span>
             </div>
           </div>
-          <div className=" hidden my-5 md:flex md:flex-col md:justify-center">
+          <div className=" hidden my-1 md:block">
             <UserCard uid={answer.uid} />
           </div>
         </div>
@@ -48,6 +51,7 @@ export default function Index(props) {
   const [questionImformation, setQuestionImformation] = useState(undefined);
   const [answerList, setAnswerList] = useState(undefined);
   const { questionId } = useParams();
+  const [showEditor, setShowEditor] = useState(false);
   //   get question details
   useEffect(() => {
     const fetchData = async () => {
@@ -114,13 +118,13 @@ export default function Index(props) {
           <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
             <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
               <Link
-                to="#"
+                to="/"
                 className="hover:text-purple-600 transform transition-all"
               >
                 首页
               </Link>
               <Link
-                to="#"
+                to="/personalPage"
                 className="hover:text-purple-600 transform transition-all"
               >
                 个人
@@ -163,12 +167,27 @@ export default function Index(props) {
                 {questionImformation !== undefined && questionImformation.title}
               </div>
             </div>
-            <MarkdownParse
-              noTOC
-              markdown={questionImformation.content}
-            ></MarkdownParse>
+            <div className="w-full mb-10 mt-6">
+              <div
+                className="text-purple-500 font-Playball text-xl hover:text-red-500 transition-all 
+        select-none mb-2"
+              >
+                The Question:
+              </div>
+              <MarkdownParse
+                noTOC
+                h1NoLine
+                markdown={questionImformation.content}
+              ></MarkdownParse>
+            </div>
           </div>
         )}
+        <div
+          className="text-purple-500 font-Playball text-xl hover:text-red-500 transition-all 
+        select-none mb-2"
+        >
+          All Answer:
+        </div>
         {/* 渲染答案 */}
         {answerList !== undefined &&
           answerList.map((item) => {
@@ -179,6 +198,28 @@ export default function Index(props) {
               ></AnswerRender>
             );
           })}
+        {/* 发布回答按钮 */}
+        <div className=" relative w-full flex justify-end p-5 pr-20 ">
+          <CSSTransition
+            in={showEditor}
+            classNames="FadeInOut"
+            timeout={200}
+            unmountOnExit
+          >
+            <MarkdownEditorForAnswer
+              title="发布回答"
+              questionId={questionImformation?.questionId}
+              close={() => setShowEditor(false)}
+            />
+          </CSSTransition>
+          <div onClick={() => setShowEditor(true)}>
+            <SubmitButton
+              render={() => {
+                return "回答";
+              }}
+            />
+          </div>
+        </div>
         {/* 向上翻页按钮 */}
         <div
           className="fixed right-2 bottom-8 md:right-16 md:animate-bounce cursor-pointer"

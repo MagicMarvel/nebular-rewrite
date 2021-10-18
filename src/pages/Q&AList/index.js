@@ -1,38 +1,41 @@
 import React, { useEffect, useState } from "react";
 import Require from "../../utils/Require";
 import { Link } from "react-router-dom";
-import { GET_ARTICLE_LIST, GET_QUESTION_LIST } from "../../utils/pathMap";
+import { GET_QUESTION_LIST } from "../../utils/pathMap";
 import { useParams } from "react-router-dom";
 import randomMotto from "../../utils/randomMotto";
 import PageNav from "../../components/PageNav";
-import { SwitchTransition, CSSTransition } from "react-transition-group";
-import axios from "axios";
+import UserCard from "../../components/UserCard";
 import pureMarkdownToSummary from "../../utils/pureMarkdownToSummary";
 
 function QAListItemRender(props) {
   return (
     // 单个的文章卡片，包括了左边的文章summary和右侧的用户
-    <div className="">
+    <div>
       {/* 左侧的文章summary */}
       <div
         key={props.item.questionId}
-        className="border-b border-gray-600 border-dotted pb-2 lg:float-left w-full"
+        className="border-b border-gray-600 border-dotted w-full flex justify-between"
       >
-        <div className="inline-block lg:w-4/5">
+        <div className="block lg:w-4/5 flex-grow mr-5">
           {/* 文章名 */}
-          <div
-            className="mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
-      text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700 
-        "
+          <Link
+            className="block mt-6 mb-3 pl-5 py-1 bg-gray-300 bg-opacity-10 font-kaiti text-xl 
+      text-purple-900 font-medium text-opacity-75 border-l-3 border-indigo-700"
+            to={`/QA/${props?.item.questionId}`}
           >
             <div className="transform hover:translate-x-8 hover:text-red-500 duration-500 cursor-pointer">
               {props.item.title}
             </div>
-          </div>
+          </Link>
           {/* 文章 summary */}
           <div className="font-kaiti lg:float-left lg:w-full">
             <div className="text-gray-600 select-none">
-              {pureMarkdownToSummary(props.item.summary)}
+              {pureMarkdownToSummary(
+                props.item.summary === ""
+                  ? "summary为空....."
+                  : props.item.summary
+              )}
             </div>
             {/* 作者 发布时间 */}
             <div className="mt-2 float-right">
@@ -43,17 +46,13 @@ function QAListItemRender(props) {
             </div>
           </div>
           {/* 清除发布时间和作者右浮动 */}
-          <div className="clear-both"></div>{" "}
+          <div className="clear-both"></div>
         </div>
-        <div
-          className="hidden lg:inline-block lg:border lg:border-gray-600 lg:w-32 lg:h-32
-        lg:float-right lg:mt-1"
-        ></div>
+        {/* 显示用户的小框框 */}
+        <div className="hidden lg:block">
+          <UserCard uid={props.uid} />
+        </div>
       </div>
-      {/* 显示用户的小框框 */}
-
-      {/* 清除用户卡片的右浮动 */}
-      <div className="clear-both"></div>
     </div>
   );
 }
@@ -73,7 +72,7 @@ export default function Index(props) {
       });
       setQAList(res.data.data.detail);
       setMaxPage(res.data.data.size);
-      console.log(res.data.data.detail);
+      console.log(res.data.data);
     };
     fetchData();
   }, [pageNum]);
@@ -147,6 +146,7 @@ export default function Index(props) {
               <QAListItemRender
                 key={item.questionId}
                 item={item}
+                uid={item.uid}
               ></QAListItemRender>
             );
           })}

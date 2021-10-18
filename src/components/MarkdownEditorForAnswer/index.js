@@ -2,22 +2,23 @@ import React, { useState, useRef, useContext } from "react";
 import MarkdownParse from "../MarkdownParse";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import Require from "../../utils/Require";
-import { UPLOAD_IMAGE, POST_NEW_ARTICLE } from "../../utils/pathMap";
+import {
+  UPLOAD_IMAGE,
+  POST_NEW_ARTICLE,
+  POST_ANSWER,
+} from "../../utils/pathMap";
 import { ToastContext } from "../../App";
-import { useHistory } from "react-router-dom";
 
 // TODO:添加修改文章的功能
 /**
  *
- * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close,传入markdownInput作为默认的文章内容，
- * type为"modifyArticle"为修改文章，为"addArticle"为添加文章，为"addQA"为添加问题，为"addQA"为添加回答
+ * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close，传入qusetionId
  * @returns none
  */
 export default function Index(props) {
   const [markdownInput, setMarkdownInput] = useState(props.markdownInput || "");
   const [showMarkdown, setShowMarkdown] = useState(false);
   const [imageFileName, setImageFileName] = useState("");
-  const [title, setTitle] = useState(props.inputTitle || "");
   const markdownInputArea = useRef(null);
   const toastController = useContext(ToastContext);
 
@@ -56,19 +57,19 @@ export default function Index(props) {
   // 处理文章上传的点击事件
   const handleSubmit = () => {
     const fetchData = async () => {
-      const res = await Require.post(POST_NEW_ARTICLE, {
-        title: title,
+      const res = await Require.post(POST_ANSWER, {
+        questionId: props.questionId,
         content: markdownInput,
       });
       if (res.data.code === 1) {
-        toastController({ timeout: 2000, mes: "发布成功" });
+        toastController({ timeout: 2000, mes: "回答成功，请刷新" });
         setTimeout(() => {
           props.close();
         }, 2000);
       } else
         toastController({
           timeout: 3000,
-          mes: "发布失败，若反复遇到该问题，请联系管理员",
+          mes: "回答失败，若反复遇到该问题，请联系管理员",
         });
     };
     if (markdownInput.length <= 5)
@@ -77,12 +78,16 @@ export default function Index(props) {
   };
 
   return (
-    <div className="absolute z-40 top-0 left-0 min-w-full max-w-full min-h-screen text-gray-700 py-6">
+    <div
+      className="absolute z-40 left-0 min-w-full max-w-full min-h-screen text-gray-700 py-6"
+      style={{ top: "-50vh" }}
+    >
       <div className=" w-11/12 mx-auto rounded-2xl py-3 bg-white shadow-2xl transition-all">
         {/* 组件标题和关闭按钮 */}
         <div className="flex justify-between border-b m-3 px-2 p-1 text-xl font-medium font-sans items-center">
           <div className="">{props.title || "目前还没有标题"}</div>
           <svg
+            className="cursor-pointer"
             onClick={() => {
               props.close(false);
             }}
@@ -103,20 +108,9 @@ export default function Index(props) {
         </div>
 
         {/* 文章标题输入框+图片上传按钮+切换渲染按钮 */}
-        <div className="flex justify-between items-center flex-wrap content-center ">
-          {/* 文章标题框 */}
-          <div className="flex justify-between ">
-            <label className="mx-2 text-sm md:mx-4 md:text-base ">
-              文章标题:
-            </label>
-            <input
-              className="border w-60 md:w-96 rounded flex-grow focus:border-blue-300 focus:ring-1 outline-none transition-all duration-200"
-              onChange={(event) => setTitle(event.target.value)}
-              value={title}
-            ></input>
-          </div>
+        <div className="flex justify-end mx-1 items-center flex-wrap content-center ">
           {/* 图片上传按钮 */}
-          <div className="w-44 mx-2 pl-1 relative">
+          <div className="w-44 relative">
             {/* 图片上传的SVG */}
             <svg
               className="inline"
@@ -155,7 +149,7 @@ export default function Index(props) {
           </div>
           {/* 切换按钮 */}
           <div
-            className="flex items-center m-2"
+            className="flex items-center"
             onClick={() => {
               setShowMarkdown(() => {
                 return !showMarkdown;
@@ -231,7 +225,7 @@ export default function Index(props) {
                   {/* 这个div是占位但隐藏的，用于撑大父dpre */}
                   <p
                     className=" p-3 break-all max-w-full whitespace-pre-wrap	"
-                    style={{ minHeight: "75vh", width: "1000px" }}
+                    style={{ minHeight: "50vh", width: "1000px" }}
                   >
                     {markdownInput}
                   </p>
@@ -251,11 +245,11 @@ export default function Index(props) {
                 <div className="">
                   <div
                     className=" border-blue-300 rounded bg-sky bg-center bg-fixed"
-                    style={{ minHeight: "75vh" }}
+                    style={{ minHeight: "50vh" }}
                   >
                     <div
                       className="bg-white h-full bg-opacity-80 p-1 select-none"
-                      style={{ minHeight: "75vh" }}
+                      style={{ minHeight: "50vh" }}
                     >
                       <MarkdownParse
                         markdown={
