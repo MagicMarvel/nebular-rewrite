@@ -20,7 +20,7 @@ function QAItem(props) {
       <Link
         className="group-hover:-translate-y-2 group-hover:tracking-widest transform
            transition-all duration-150 tracking-wide select-none font-kaiti"
-        to={`/article/${props.articleId}`}
+        to={`/QA/${props.questionId}`}
       >
         {props.title}
       </Link>

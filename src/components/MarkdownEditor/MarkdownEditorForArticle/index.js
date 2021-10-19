@@ -70,7 +70,9 @@ export default function Index(props) {
           mes: "发布失败，若反复遇到该问题，请联系管理员",
         });
     };
-    if (markdownInput.length <= 5)
+    if (title.length <= 3)
+      toastController({ timeout: 1500, mes: "标题太短啦，至少3个字符哦" });
+    else if (markdownInput.length <= 5)
       toastController({ timeout: 1500, mes: "内容太短啦，至少5个字符哦" });
     else fetchData();
   };

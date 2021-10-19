@@ -11,12 +11,9 @@ export default function Index(props) {
   const Telephone = useRef(null);
   const Email = useRef(null);
   const history = useHistory();
-  const [toastShow, setToastShow] = useState(false);
-  const [toastMes, setToastMes] = useState(undefined);
   const toastController = useContext(ToastContext);
 
   const regist = () => {
-    setToastShow(false);
     const fetch = async () => {
       const res = await Require.post(REGISTER, {
         username: UsrName.current.value,
@@ -24,7 +21,7 @@ export default function Index(props) {
         mail: Email.current.value,
         password: Password.current.value,
       });
-      console.log(res);
+
       if (res.data.code === 1) {
         toastController({ mes: "注册成功", timeout: 1000 });
         setTimeout(() => {
@@ -37,7 +34,24 @@ export default function Index(props) {
         });
       }
     };
-    fetch();
+    console.log(
+      /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(Email.current.value)
+    );
+    console.log(/^([1][3,4,5,6,7,8,9])\d{9}$/.test(Telephone.current.value));
+    if (
+      UsrName.current.value.length >= 4 &&
+      /^([1][3,4,5,6,7,8,9])\d{9}$/.test(Telephone.current.value) &&
+      /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(
+        Email.current.value
+      ) &&
+      Password.current.value.length >= 6
+    )
+      fetch();
+    else
+      toastController({
+        mes: "请检查：username是否大于等于4位、密码是否大于等于6位、电子邮件电话号码是否合法",
+        timeout: 3000,
+      });
   };
 
   return (
@@ -50,8 +64,7 @@ export default function Index(props) {
           type="text"
           name="usrName"
           ref={UsrName}
-          placeholder="登录的用户名"
-          className="w-48 lg:w-64 text-black placeholder-gray-400"
+          className="w-48 lg:w-64 text-gray-800 placeholder-gray-400"
         />
       </div>
       <div className="p-3">
@@ -62,7 +75,7 @@ export default function Index(props) {
           type="password"
           name="password"
           ref={Password}
-          className="w-48 lg:w-64 text-black"
+          className="w-48 lg:w-64 text-gray-800"
         />
       </div>
       <div className="p-3">
@@ -73,7 +86,7 @@ export default function Index(props) {
           type="tel"
           name="telephone"
           ref={Telephone}
-          className="w-48 lg:w-64 text-black"
+          className="w-48 lg:w-64 text-gray-800"
         />
       </div>
       <div className="p-3">
@@ -84,7 +97,7 @@ export default function Index(props) {
           type="text"
           name="email"
           ref={Email}
-          className="w-48 lg:w-64 text-black"
+          className="w-48 lg:w-64 text-gray-800"
         />
       </div>
       <div className="p-3">

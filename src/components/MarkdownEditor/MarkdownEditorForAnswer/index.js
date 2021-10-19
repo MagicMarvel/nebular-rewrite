@@ -1,13 +1,9 @@
 import React, { useState, useRef, useContext } from "react";
-import MarkdownParse from "../MarkdownParse";
+import MarkdownParse from "../../MarkdownParse";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import Require from "../../utils/Require";
-import {
-  UPLOAD_IMAGE,
-  POST_NEW_ARTICLE,
-  POST_ANSWER,
-} from "../../utils/pathMap";
-import { ToastContext } from "../../App";
+import Require from "../../../utils/Require";
+import { UPLOAD_IMAGE, POST_ANSWER } from "../../../utils/pathMap";
+import { ToastContext } from "../../../App";
 
 // TODO:添加修改文章的功能
 /**
@@ -62,7 +58,7 @@ export default function Index(props) {
         content: markdownInput,
       });
       if (res.data.code === 1) {
-        toastController({ timeout: 2000, mes: "回答成功，请刷新" });
+        toastController({ timeout: 2000, mes: "回答成功" });
         setTimeout(() => {
           props.close();
         }, 2000);

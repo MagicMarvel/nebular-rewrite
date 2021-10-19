@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import Require from "../../utils/Require";
-import { Link } from "react-router-dom";
-import {
-  GET_ARTICLE_BY_CURRENCY_USER,
-  DELETE_ARTICLEL_BY_ID,
-} from "../../utils/pathMap";
-import { GET_USER, LOGIN } from "../../utils/pathMap";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import PersonalLogout from "../../components/PersonalLogout";
-import PersonalInformation from "../../components/PersonalInformation";
-import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditorForArticle";
+import styled from "styled-components";
 import { ToastContext } from "../../App";
-import PersonalShowQA from "../../components/PersonalShowQA";
-import MarkdownEditorForQuestion from "../../components/MarkdownEditor/MarkdownEditorForQuestion";
 import BackgroundCard from "../../components/BackgroundCard";
+import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditorForArticle";
+import MarkdownEditorForQuestion from "../../components/MarkdownEditor/MarkdownEditorForQuestion";
+import PersonalInformation from "../../components/PersonalInformation";
+import PersonalLogout from "../../components/PersonalLogout";
+import PersonalShowQA from "../../components/PersonalShowQA";
+import {
+  DELETE_ARTICLEL_BY_ID,
+  GET_ARTICLE_BY_CURRENCY_USER,
+  GET_USER,
+  LOGIN,
+} from "../../utils/pathMap";
+import Require from "../../utils/Require";
 
 const SideBar = styled.div`
   margin-top: 1rem;
@@ -451,8 +451,6 @@ export default function Index(props) {
                   <PersonalShowQA
                     showEditorForQA={() => {
                       setShowMarkdownEditorForQa(true);
-                      console.log("post QA");
-                      console.log(showMarkdownEditorForQa);
                     }}
                   />
                 )}

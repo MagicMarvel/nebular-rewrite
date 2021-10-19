@@ -9,7 +9,7 @@ import {
 import MarkdownParse from "../../components/MarkdownParse";
 import UserCard from "../../components/UserCard";
 import SubmitButton from "../../components/SubmitButton";
-import MarkdownEditorForAnswer from "../../components/MarkdownEditorForAnswer";
+import MarkdownEditorForAnswer from "../../components/MarkdownEditor/MarkdownEditorForAnswer";
 import { CSSTransition } from "react-transition-group";
 import BackgroundCard from "../../components/BackgroundCard";
 
@@ -73,7 +73,7 @@ export default function Index(props) {
     fetchData();
   }, [questionId]);
 
-  //   get answerList
+  // get answerList
   useEffect(() => {
     const fetchDate = async () => {
       const res = await Require.get(GET_ANSWER_BY_QUESTIONID, {
@@ -88,7 +88,7 @@ export default function Index(props) {
       setAnswerList(res.data.data.detail);
     };
     fetchDate();
-  }, [questionId]);
+  }, [questionId, showEditor]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
