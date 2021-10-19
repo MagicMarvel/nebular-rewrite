@@ -1,22 +1,23 @@
 import React, { useState, useRef, useContext } from "react";
-import MarkdownParse from "../MarkdownParse";
+import MarkdownParse from "../../MarkdownParse";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import Require from "../../utils/Require";
-import { UPLOAD_IMAGE, POST_NEW_QUESTION } from "../../utils/pathMap";
-import { ToastContext } from "../../App";
+import Require from "../../../utils/Require";
+import { UPLOAD_IMAGE, POST_NEW_ARTICLE } from "../../../utils/pathMap";
+import { ToastContext } from "../../../App";
 
 // TODO:添加修改文章的功能
 /**
  *
- * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close
+ * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close,传入markdownInput作为默认的文章内容，
+ * type为"modifyArticle"为修改文章，为"addArticle"为添加文章，为"addQA"为添加问题，为"addQA"为添加回答
  * @returns none
  */
 export default function Index(props) {
   const [markdownInput, setMarkdownInput] = useState(props.markdownInput || "");
   const [showMarkdown, setShowMarkdown] = useState(false);
   const [imageFileName, setImageFileName] = useState("");
-  const markdownInputArea = useRef(null);
   const [title, setTitle] = useState(props.inputTitle || "");
+  const markdownInputArea = useRef(null);
   const toastController = useContext(ToastContext);
 
   const handleInput = (event) => {
@@ -51,22 +52,22 @@ export default function Index(props) {
     }
   };
 
-  // 处理提问上传的点击事件
+  // 处理文章上传的点击事件
   const handleSubmit = () => {
     const fetchData = async () => {
-      const res = await Require.post(POST_NEW_QUESTION, {
+      const res = await Require.post(POST_NEW_ARTICLE, {
         title: title,
         content: markdownInput,
       });
       if (res.data.code === 1) {
-        toastController({ timeout: 2000, mes: "问题发布成功，请刷新" });
+        toastController({ timeout: 2000, mes: "发布成功" });
         setTimeout(() => {
           props.close();
         }, 2000);
       } else
         toastController({
           timeout: 3000,
-          mes: "问题发布失败，若反复遇到该问题，请联系管理员",
+          mes: "发布失败，若反复遇到该问题，请联系管理员",
         });
     };
     if (markdownInput.length <= 5)
@@ -79,9 +80,8 @@ export default function Index(props) {
       <div className=" w-11/12 mx-auto rounded-2xl py-3 bg-white shadow-2xl transition-all">
         {/* 组件标题和关闭按钮 */}
         <div className="flex justify-between border-b m-3 px-2 p-1 text-xl font-medium font-sans items-center">
-          <div className="">提问发布页面</div>
+          <div className="">{props.title || "目前还没有标题"}</div>
           <svg
-            className="cursor-pointer"
             onClick={() => {
               props.close(false);
             }}
@@ -102,11 +102,11 @@ export default function Index(props) {
         </div>
 
         {/* 文章标题输入框+图片上传按钮+切换渲染按钮 */}
-        <div className="flex justify-between mx-5 items-center flex-wrap content-center ">
+        <div className="flex justify-between items-center flex-wrap content-center ">
           {/* 文章标题框 */}
           <div className="flex justify-between ">
             <label className="mx-2 text-sm md:mx-4 md:text-base ">
-              问题标题:
+              文章标题:
             </label>
             <input
               className="border w-60 md:w-96 rounded flex-grow focus:border-blue-300 focus:ring-1 outline-none transition-all duration-200"

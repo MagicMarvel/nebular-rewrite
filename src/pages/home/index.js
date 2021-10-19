@@ -43,18 +43,6 @@ export default function Index(props) {
   const { routerChoice } = useParams();
   const [usrInformation, setUsrInformation] = useState(undefined);
 
-  // 窗口过大的时候通过设置html的fontsize调整页面整体缩放
-  // useEffect(() => {
-  //   if (
-  //     parseInt(
-  //       window.getComputedStyle(document.getElementById("homeBackGround"), null)
-  //         .width
-  //     ) > 1600
-  //   ) {
-  //     document.getElementsByTagName("html")[0].style.fontSize = "19px";
-  //   }
-  // });
-
   useEffect(() => {
     if (routerChoice === "login") {
       setChoice("login");
@@ -95,11 +83,11 @@ export default function Index(props) {
           //  登录成功
           console.log("password login success");
           const res = await Require.get(GET_USER);
+          setUsrInformation(res.data.data);
           toastController({
             mes: `欢迎回来 ${res.data.data.username}`,
             timeout: 1500,
           });
-          setUsrInformation(res.data.data);
         } else {
           console.log("password login fail");
         }
@@ -239,8 +227,14 @@ export default function Index(props) {
                     </div>
                   </div>
                   {/* footer */}
-                  <div className="text-white text-xs sm:text-base">
-                    @2021 MagicMarvel
+                  <div className="text-gray-400 text-xs sm:text-sm py-2">
+                    <a className="mx-2" href="https://beian.miit.gov.cn/">
+                      粤ICP备2021079778号
+                    </a>
+                    <a className="mx-2" href="https://beian.miit.gov.cn/">
+                      粤ICP备2021079778号-1
+                    </a>
+                    <span className="mx-2">@CopyRight STU-ACM </span>
                   </div>
                 </div>
               ) : (

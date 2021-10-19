@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "./pathMap";
 
 const instance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: BASE_URL + "/api",
   //   timeout: 2000,
 });
 
