@@ -8,7 +8,13 @@ export default function index(props) {
       {/* 背景 */}
       <div className="bg-sky h-screen w-screen bg-center fixed inset-0 -z-10" />
       {/* 白色大卡片 */}
-      <div className="bg-gray-200 bg-opacity-80 p-10 rounded-none md:rounded-3xl md:w-11/12 md:mx-auto md:my-10">
+      <div
+        className="bg-gray-200 bg-opacity-80 p-10 rounded-none md:rounded-3xl md:w-11/12 md:mx-auto md:my-10 shadow-2xl"
+        style={{
+          backdropFilter: "blur(3px)",
+          WebkitBackdropFilter: "blur(3px)",
+        }}
+      >
         {/* 博客标题副标题导航栏 */}
         <div className="flex flex-col items-center justify-between h-48 md:items-start">
           {/* flex浮动控制用 */}
@@ -61,7 +67,10 @@ export default function index(props) {
           </div>
         </div>
         {props.children}
-        <div className="flex justify-center items-center h-7 text-gray-400 text-sm mt-5">
+        <div
+          className="flex justify-center items-center h-7 text-gray-400 
+         text-xs md:text-sm mt-5 flex-col md:flex-row"
+        >
           <a className="mx-2" href="https://beian.miit.gov.cn/">
             粤ICP备2021079778号
           </a>

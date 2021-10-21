@@ -59,7 +59,7 @@ export default function Index(props) {
         content: markdownInput,
       });
       if (res.data.code === 1) {
-        toastController({ timeout: 2000, mes: "问题发布成功，请刷新" });
+        toastController({ timeout: 2000, mes: "问题发布成功" });
         setTimeout(() => {
           props.close();
         }, 2000);
@@ -81,7 +81,7 @@ export default function Index(props) {
       <div className=" w-11/12 mx-auto rounded-2xl py-3 bg-white shadow-2xl transition-all">
         {/* 组件标题和关闭按钮 */}
         <div className="flex justify-between border-b m-3 px-2 p-1 text-xl font-medium font-sans items-center">
-          <div className="">提问发布页面</div>
+          <div className="">提问发布</div>
           <svg
             className="cursor-pointer"
             onClick={() => {

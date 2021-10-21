@@ -1,24 +1,42 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import MarkdownParse from "../../MarkdownParse";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import Require from "../../../utils/Require";
-import { UPLOAD_IMAGE, POST_NEW_ARTICLE } from "../../../utils/pathMap";
+import {
+  UPLOAD_IMAGE,
+  EDIT_ARTICLEL_BY_ID,
+  GET_ARTICLE_BY_ID,
+} from "../../../utils/pathMap";
 import { ToastContext } from "../../../App";
 
 // TODO:添加修改文章的功能
 /**
  *
- * @param {object} props 需要传入组件标题title，传入关闭该组件要用的函数close,传入markdownInput作为默认的文章内容，
- * type为"modifyArticle"为修改文章，为"addArticle"为添加文章，为"addQA"为添加问题，为"addQA"为添加回答
+ * @param {object} props 传入关闭该组件要用的函数close,传入articleId作为被修改的文章
  * @returns none
  */
 export default function Index(props) {
-  const [markdownInput, setMarkdownInput] = useState(props.markdownInput || "");
+  const [title, setTitle] = useState("");
+  const [markdownInput, setMarkdownInput] = useState("");
   const [showMarkdown, setShowMarkdown] = useState(false);
   const [imageFileName, setImageFileName] = useState("");
-  const [title, setTitle] = useState(props.inputTitle || "");
   const markdownInputArea = useRef(null);
   const toastController = useContext(ToastContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await Require.get(GET_ARTICLE_BY_ID, {
+        params: {
+          articleId: props.articleId,
+        },
+      });
+      if (res.data.code === 1) {
+        setTitle(res.data.data.title);
+        setMarkdownInput(res.data.data.content);
+      }
+    };
+    fetchData();
+  }, [props.articleId]);
 
   const handleInput = (event) => {
     setMarkdownInput(event.target.value);
@@ -55,19 +73,20 @@ export default function Index(props) {
   // 处理文章上传的点击事件
   const handleSubmit = () => {
     const fetchData = async () => {
-      const res = await Require.post(POST_NEW_ARTICLE, {
+      const res = await Require.post(EDIT_ARTICLEL_BY_ID, {
+        articleId: props.articleId,
         title: title,
         content: markdownInput,
       });
       if (res.data.code === 1) {
-        toastController({ timeout: 2000, mes: "发布成功" });
+        toastController({ timeout: 2000, mes: "修改成功" });
         setTimeout(() => {
           props.close();
         }, 2000);
       } else
         toastController({
           timeout: 3000,
-          mes: "发布失败，若反复遇到该问题，请联系管理员",
+          mes: "修改失败，若反复遇到该问题，请联系管理员",
         });
     };
     if (title.length <= 3)
@@ -82,7 +101,7 @@ export default function Index(props) {
       <div className=" w-11/12 mx-auto rounded-2xl py-3 bg-white shadow-2xl transition-all">
         {/* 组件标题和关闭按钮 */}
         <div className="flex justify-between border-b m-3 px-2 p-1 text-xl font-medium font-sans items-center">
-          <div className="">文章发布</div>
+          <div className="">文章修改</div>
           <svg
             onClick={() => {
               props.close(false);

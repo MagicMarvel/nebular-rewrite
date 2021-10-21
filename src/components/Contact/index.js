@@ -4,7 +4,7 @@ export default function Index(props) {
   return (
     <HomePopUpCard handleClose={props.handleClose} title="联系我们">
       <div className="text-gray-400 text-sm">
-        这里的消息将会发送至我们的邮箱，请随意填写
+        这里的消息将会发送至后台，请随意填写
       </div>
       <textarea className=" w-full mx-auto block m-3 text-gray-900 "></textarea>{" "}
       <div className="p-3">

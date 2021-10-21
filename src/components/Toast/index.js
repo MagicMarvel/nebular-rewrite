@@ -25,7 +25,7 @@ export default function Index(props) {
       timeout={6000}
       unmountOnExit
     >
-      <Container className="select-none cursor-not-allowed">
+      <Container className="select-none cursor-not-allowed text-xs text-red-500 md:text-base">
         {props.config.mes}
       </Container>
     </CSSTransition>

@@ -10,7 +10,7 @@ import BackgroundCard from "../../components/BackgroundCard";
 
 function QAListItemRender(props) {
   return (
-    // 单个的文章卡片，包括了左边的文章summary和右侧的用户
+    // 单个的提问卡片，包括了左边的文章summary和右侧的用户
     <div>
       {/* 左侧的文章summary */}
       <div

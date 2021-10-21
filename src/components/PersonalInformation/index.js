@@ -46,6 +46,7 @@ export default function Index(props) {
   const [username, setUsername] = useState(undefined);
   const [tel, setTel] = useState(undefined);
   const [showUsrPhotoChanger, setShowUsrPhotoChanger] = useState(false);
+  const [reRender, setReRender] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const res = await Require.get(GET_USER_BY_ID, {
@@ -67,8 +68,8 @@ export default function Index(props) {
         setTel(tmp.tel);
       }
     };
-    if (props.usrInformation !== undefined) fetchData();
-  }, [props.usrInformation]);
+    if (props.usrInformation !== undefined && reRender === false) fetchData();
+  }, [props.usrInformation, reRender]);
 
   const handleInformationUpload = async () => {
     const res = await Require.post(INFO_CHANGE, {
@@ -83,7 +84,11 @@ export default function Index(props) {
       tel,
     });
     if (res.data.code === 1) {
-      toastController({ mes: "修改成功，请刷新", timeout: 1000 });
+      setReRender(true);
+      setTimeout(() => {
+        setReRender(false);
+      }, 500);
+      toastController({ mes: "修改成功", timeout: 1000 });
     } else
       toastController({
         mes: "修改失败，若反复遇到该问题，请联系管理员",

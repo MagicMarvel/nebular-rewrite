@@ -35,7 +35,6 @@ export default function Index(props) {
     setShowMain(true);
   }, [showMain]);
 
-  const history = useHistory();
   const toastController = useContext(ToastContext);
 
   const [mainDisplay, setMainDisplay] = useState(true);
@@ -67,10 +66,11 @@ export default function Index(props) {
         if (res.data.code === 1) {
           //  登录成功
           console.log("session login success");
-          toastController({
-            mes: `欢迎回来 ${res.data.data.username}`,
-            timeout: 1500,
-          });
+          if (mainDisplay === true)
+            toastController({
+              mes: `欢迎回来 ${res.data.data.username}`,
+              timeout: 1500,
+            });
           setUsrInformation(res.data.data);
         } else {
           // 这里不应该能进来，因为获取不到当前用户应该是403,403axios报异常
@@ -84,17 +84,18 @@ export default function Index(props) {
           console.log("password login success");
           const res = await Require.get(GET_USER);
           setUsrInformation(res.data.data);
-          toastController({
-            mes: `欢迎回来 ${res.data.data.username}`,
-            timeout: 1500,
-          });
+          if (mainDisplay === true)
+            toastController({
+              mes: `欢迎回来 ${res.data.data.username}`,
+              timeout: 1500,
+            });
         } else {
           console.log("password login fail");
         }
       }
     };
     fetchLogin();
-  }, [toastController, history.location]);
+  }, [toastController, mainDisplay]);
 
   return (
     <div>
@@ -227,7 +228,7 @@ export default function Index(props) {
                     </div>
                   </div>
                   {/* footer */}
-                  <div className="text-gray-400 text-xs sm:text-sm py-2">
+                  <div className="text-gray-500 md:text-gray-400 text-xs md:text-sm py-2 flex flex-col md:flex-row">
                     <a className="mx-2" href="https://beian.miit.gov.cn/">
                       粤ICP备2021079778号
                     </a>

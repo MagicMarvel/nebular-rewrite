@@ -4,7 +4,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
 import { ToastContext } from "../../App";
 import BackgroundCard from "../../components/BackgroundCard";
-import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditorForArticle";
+import MarkdownEditorForArticle from "../../components/MarkdownEditor/MarkdownEditorForArticle";
 import MarkdownEditorForQuestion from "../../components/MarkdownEditor/MarkdownEditorForQuestion";
 import PersonalInformation from "../../components/PersonalInformation";
 import PersonalLogout from "../../components/PersonalLogout";
@@ -16,6 +16,7 @@ import {
   LOGIN,
 } from "../../utils/pathMap";
 import Require from "../../utils/Require";
+import MarkdownEditorForArticleModify from "../../components/MarkdownEditor/MarkdownEditorForArticleModify";
 
 const SideBar = styled.div`
   margin-top: 1rem;
@@ -64,14 +65,14 @@ const SideBarItem = styled.div`
 function ArticleItem(props) {
   const [mouseOver, setMouseOver] = useState(false);
   const toastController = useContext(ToastContext);
-  const history = useHistory();
   const handleDeleteArticle = async () => {
     console.log("delete article");
     const res = await Require.post(DELETE_ARTICLEL_BY_ID, {
       articleId: props.articleId,
     });
     if (res.data.code === 1) {
-      toastController({ mes: "删除成功，请刷新页面", timeout: 1500 });
+      toastController({ mes: "删除成功", timeout: 1500 });
+      props.setReRender();
     } else
       toastController({
         mes: "删除失败，若你反复遇到该问题，请联系管理员",
@@ -88,7 +89,7 @@ function ArticleItem(props) {
     >
       <Link
         className="group-hover:-translate-y-2 group-hover:tracking-widest transform
-         transition-all duration-150 tracking-wide select-none font-kaiti"
+         transition-all duration-150 tracking-wide select-none font-kaiti text-base lg:text-2xl text-center"
         to={`/article/${props.articleId}`}
       >
         {props.title}
@@ -98,7 +99,10 @@ function ArticleItem(props) {
           <div
             className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer 
           select-none"
-            // onClick={()=>props.handleEditArticle()}
+            onClick={() => {
+              props.setModifyArticleId(props.articleId);
+              props.setShowModifyEditor(true);
+            }}
           >
             修改
           </div>
@@ -120,6 +124,7 @@ function ArticleList(props) {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(undefined);
   const pageRef = useRef(null);
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -136,8 +141,13 @@ function ArticleList(props) {
       } else {
       }
     };
-    fetch();
-  }, [page]);
+    if (reRender === false) fetch();
+  }, [page, reRender]);
+
+  // 接受上层组件的重新渲染命令，然后放入这层的state
+  useEffect(() => {
+    setReRender(props.reRender);
+  }, [props.reRender]);
 
   return (
     <div className="min-h-screen flex-grow ml-8">
@@ -169,7 +179,17 @@ function ArticleList(props) {
           {persionalArticleList.map((item) => {
             return (
               <div key={item.articleId}>
-                <ArticleItem {...item} />
+                <ArticleItem
+                  setModifyArticleId={props.setModifyArticleId}
+                  setShowModifyEditor={props.setShowModifyEditor}
+                  setReRender={() => {
+                    setReRender(true);
+                    setTimeout(() => {
+                      setReRender(false);
+                    }, 500);
+                  }}
+                  {...item}
+                />
               </div>
             );
           })}
@@ -228,13 +248,17 @@ function ArticleList(props) {
 
 export default function Index(props) {
   const history = useHistory();
+  const [articleReRender, setArticleReRender] = useState(false);
   const [usrInformation, setUsrInformation] = useState(undefined);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [markdownInput, setMarkdownInput] = useState("");
+  const [articleId, setArticleId] = useState(undefined);
   const [sideBarChoice, setSideBarChoice] = useState("article");
   const [showMarkdownEditor, setShowMarkdownEditor] = useState(false);
   const toastController = useContext(ToastContext);
+  const [QAReRender, setQARerender] = useState(false);
   const [showMarkdownEditorForQa, setShowMarkdownEditorForQa] = useState(false);
+  const [showMarkdownModifyEditor, setShowMarkdownModifyEditor] =
+    useState(false);
 
   // 检查是否登录
   useEffect(() => {
@@ -303,9 +327,33 @@ export default function Index(props) {
         timeout={200}
         unmountOnExit
       >
-        <MarkdownEditor
-          close={setShowMarkdownEditor}
-          markdownInput={markdownInput}
+        <MarkdownEditorForArticle
+          close={(choice) => {
+            setShowMarkdownEditor(choice);
+            setArticleReRender(true);
+            setTimeout(() => {
+              setArticleReRender(false);
+            }, 500);
+          }}
+        />
+      </CSSTransition>
+
+      <CSSTransition
+        in={showMarkdownModifyEditor === true ? true : false}
+        classNames="FadeInOut"
+        timeout={200}
+        unmountOnExit
+      >
+        <MarkdownEditorForArticleModify
+          close={(choice) => {
+            setShowMarkdownModifyEditor(choice);
+            // 通知组件重新渲染
+            setArticleReRender(true);
+            setTimeout(() => {
+              setArticleReRender(false);
+            }, 500);
+          }}
+          articleId={articleId}
         />
       </CSSTransition>
 
@@ -316,10 +364,16 @@ export default function Index(props) {
         unmountOnExit
       >
         <MarkdownEditorForQuestion
-          close={() => setShowMarkdownEditorForQa(false)}
-          markdownInput={markdownInput}
+          close={() => {
+            setShowMarkdownEditorForQa(false);
+            setQARerender(true);
+            setTimeout(() => {
+              setQARerender(false);
+            }, 500);
+          }}
         />
       </CSSTransition>
+
       <BackgroundCard>
         {/* 主体部分 */}
         {/* sticky的选择展示栏，定位用，正方形 */}
@@ -442,6 +496,11 @@ export default function Index(props) {
                 {/* 渲染article部分 */}
                 {sideBarChoice === "article" && (
                   <ArticleList
+                    setModifyArticleId={setArticleId}
+                    // 传递是否显示修改文章编辑器的函数
+                    setShowModifyEditor={setShowMarkdownModifyEditor}
+                    reRender={articleReRender}
+                    // 传递是否显示发布文章编辑器的函数
                     showEditor={() => {
                       setShowMarkdownEditor(true);
                     }}
@@ -449,6 +508,7 @@ export default function Index(props) {
                 )}
                 {sideBarChoice === "QA" && (
                   <PersonalShowQA
+                    reRender={QAReRender}
                     showEditorForQA={() => {
                       setShowMarkdownEditorForQa(true);
                     }}

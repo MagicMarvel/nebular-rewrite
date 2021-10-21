@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import Require from "../../utils/Require";
 import {
   GET_QUESTION_BY_ID,
   GET_ANSWER_BY_QUESTIONID,
   GET_ANSWER_BY_ANSWERID,
+  GET_USER,
 } from "../../utils/pathMap";
 import MarkdownParse from "../../components/MarkdownParse";
 import UserCard from "../../components/UserCard";
@@ -12,6 +13,7 @@ import SubmitButton from "../../components/SubmitButton";
 import MarkdownEditorForAnswer from "../../components/MarkdownEditor/MarkdownEditorForAnswer";
 import { CSSTransition } from "react-transition-group";
 import BackgroundCard from "../../components/BackgroundCard";
+import { ToastContext } from "../../App";
 
 function AnswerRender(props) {
   const [answer, setAnswer] = useState(undefined);
@@ -52,7 +54,9 @@ export default function Index(props) {
   const [questionImformation, setQuestionImformation] = useState(undefined);
   const [answerList, setAnswerList] = useState(undefined);
   const { questionId } = useParams();
+  const toastController = useContext(ToastContext);
   const [showEditor, setShowEditor] = useState(false);
+  const history = useHistory();
   //   get question details
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +96,22 @@ export default function Index(props) {
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
+  };
+
+  const handleAnswerSumbitBtm = () => {
+    Require.get(GET_USER)
+      .then((res) => {
+        if (res.data.code === 1) setShowEditor(true);
+      })
+      .catch((res) => {
+        toastController({
+          mes: "您还未登录，一秒后跳转到登录页面",
+          timeout: 1000,
+        });
+        setTimeout(() => {
+          history.push("/home/login");
+        }, 1000);
+      });
   };
 
   return (
@@ -152,7 +172,7 @@ export default function Index(props) {
             close={() => setShowEditor(false)}
           />
         </CSSTransition>
-        <div onClick={() => setShowEditor(true)}>
+        <div onClick={handleAnswerSumbitBtm}>
           <SubmitButton
             render={() => {
               return "回答";

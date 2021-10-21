@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Require from "../../utils/Require";
 import { GET_QUESTION_LIST_BY_CURRENCY_USER } from "../../utils/pathMap";
 import { ToastContext } from "../../App";
@@ -7,7 +7,6 @@ import { CSSTransition } from "react-transition-group";
 
 function QAItem(props) {
   const [mouseOver, setMouseOver] = useState(false);
-  const toastController = useContext(ToastContext);
 
   return (
     <div
@@ -18,27 +17,14 @@ function QAItem(props) {
       onMouseLeave={() => setMouseOver(false)}
     >
       <Link
-        className="group-hover:-translate-y-2 group-hover:tracking-widest transform
+        className=" group-hover:tracking-widest transform 
            transition-all duration-150 tracking-wide select-none font-kaiti"
         to={`/QA/${props.questionId}`}
       >
         {props.title}
       </Link>
       <CSSTransition classNames="Slide" timeout={100} in={mouseOver}>
-        <div className="text-sm flex felx-row justify-center font-kaiti">
-          <div
-            className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer 
-            select-none"
-          >
-            修改
-          </div>
-          <div
-            className="mx-5 text-red-400 hover:text-blue-600 hover:text-opacity-70 transition-all duration-200 cursor-pointer
-            select-none"
-          >
-            删除
-          </div>
-        </div>
+        <div className="text-sm flex felx-row justify-center font-kaiti"></div>
       </CSSTransition>
     </div>
   );
@@ -49,6 +35,7 @@ export default function QAList(props) {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(undefined);
   const pageRef = useRef(null);
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -66,7 +53,11 @@ export default function QAList(props) {
       }
     };
     fetch();
-  }, [page]);
+  }, [page, reRender]);
+
+  useEffect(() => {
+    setReRender(props.reRender);
+  }, [props.reRender]);
 
   return (
     <div className="min-h-screen flex-grow ml-8">
