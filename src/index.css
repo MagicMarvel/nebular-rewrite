@@ -3,134 +3,143 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 .clearfix::after {
-  display: block;
-  clear: both;
-  content: "";
+    display: block;
+    clear: both;
+    content: "";
 }
+
+/* JetBrains */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 
 /* latin */
 @font-face {
-  font-family: "Playball";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/playball/v11/TK3gWksYAxQ7jbsKcg8Eneo.woff2)
-    format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: "Playball";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/playball/v11/TK3gWksYAxQ7jbsKcg8Eneo.woff2)
+        format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+        U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+        U+2215, U+FEFF, U+FFFD;
+}
+
+/* 楷体 */
+@font-face {
+    font-family: "kaiti";
+    src: local("kaiti"), local("KaiTi"), local("楷体");
 }
 
 /* 首页的中间部分出现消失的动画 */
 .FadeInOut-enter {
-  opacity: 0;
+    opacity: 0;
 }
 
 .FadeInOut-enter-active {
-  opacity: 1;
-  transition: opacity 0.2s;
+    opacity: 1;
+    transition: opacity 0.2s;
 }
 
 .FadeInOut-exit {
-  opacity: 1;
-  width: 100%;
+    opacity: 1;
+    width: 100%;
 }
 
 .FadeInOut-exit-active {
-  opacity: 0;
-  transition: opacity 0.2s;
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .FadeInOut-exit-done {
-  opacity: 0;
+    opacity: 0;
 }
 
 /* 滑动动画，不完全消失 */
 .Slide-enter {
-  opacity: 0.3;
-  transform: translateY(-100%);
+    opacity: 0.3;
+    transform: translateY(-100%);
 }
 
 .Slide-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: transform 0.2s;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.2s;
 }
 
 .Slide-exit {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .Slide-exit-active {
-  opacity: 0.3;
-  transform: translateY(-100%);
-  transition: transform 0.2s;
+    opacity: 0.3;
+    transform: translateY(-100%);
+    transition: transform 0.2s;
 }
 
 .Slide-exit-done {
-  opacity: 0;
-  transform: translateY(-100%);
+    opacity: 0;
+    transform: translateY(-100%);
 }
 
 /* 滑动动画，完全消失 2*/
 .Slide2-enter {
-  opacity: 0;
-  transform: translateY(-100%);
+    opacity: 0;
+    transform: translateY(-100%);
 }
 
 .Slide2-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: transform 0.2s;
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 0.2s;
 }
 
 .Slide2-exit {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .Slide2-exit-active {
-  opacity: 0;
-  transform: translateY(-100%);
-  transition: transform 0.2s;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: transform 0.2s;
 }
 .Slide2-exit-done {
-  opacity: 0;
-  transform: translateY(-100%);
+    opacity: 0;
+    transform: translateY(-100%);
 }
 
 /* 滑动动画、横向移动 2*/
 .SlideX-enter {
-  /* opacity: 0; */
-  transform: translateX(100%);
+    /* opacity: 0; */
+    transform: translateX(100%);
 }
 
 .SlideX-enter-active {
-  /* opacity: 1; */
-  transform: translateX(0);
-  transition: all 0.1s ease-out;
+    /* opacity: 1; */
+    transform: translateX(0);
+    transition: all 0.1s ease-out;
 }
 
 .SlideX-enter-done {
-  /* opacity: 1; */
+    /* opacity: 1; */
 }
 
 .SlideX-exit {
-  /* opacity: 1; */
-  transform: translateX(0);
+    /* opacity: 1; */
+    transform: translateX(0);
 }
 
 .SlideX-exit-active {
-  /* opacity: 0; */
-  transform: translateX(-100%);
-  transition: all 0.1s ease-out;
+    /* opacity: 0; */
+    transform: translateX(-100%);
+    transition: all 0.1s ease-out;
 }
 .SlideX-exit-done {
-  /* opacity: 0; */
-  transform: translateX(-100%);
+    /* opacity: 0; */
+    transform: translateX(-100%);
 }

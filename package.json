@@ -1,63 +1,63 @@
 {
-  "name": "nebular",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "./.",
-  "proxy": "http://www.sankuyan.cn",
-  "dependencies": {
-    "@craco/craco": "^6.2.0",
-    "@pondorasti/remark-img-links": "^1.0.8",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "axios": "^0.21.1",
-    "http-proxy-middleware": "^2.0.1",
-    "mobx": "^6.3.2",
-    "mobx-react": "^7.2.0",
-    "react": "^17.0.2",
-    "react-cropper": "^2.1.8",
-    "react-dom": "^17.0.2",
-    "react-markdown": "^7.0.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "react-syntax-highlighter": "^15.4.4",
-    "react-transition-group": "^4.4.2",
-    "rehype-katex": "4.0.0",
-    "rehype-slug": "^5.0.0",
-    "rehype-toc": "^3.0.2",
-    "remark-gfm": "^2.0.0",
-    "remark-math": "^5.0.0",
-    "styled-components": "^5.3.0",
-    "twin.macro": "^2.7.0",
-    "web-vitals": "^1.1.2"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
-  }
+    "name": "nebular",
+    "version": "0.1.0",
+    "private": true,
+    "homepage": "/",
+    "proxy1": "http://www.sankuyan.cn",
+    "dependencies": {
+        "@craco/craco": "^6.2.0",
+        "@pondorasti/remark-img-links": "^1.0.8",
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^11.2.7",
+        "@testing-library/user-event": "^12.8.3",
+        "axios": "^0.21.1",
+        "http-proxy-middleware": "^2.0.1",
+        "mobx": "^6.3.2",
+        "mobx-react": "^7.2.0",
+        "react": "^17.0.2",
+        "react-cropper": "^2.1.8",
+        "react-dom": "^17.0.2",
+        "react-markdown": "^7.0.1",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.3",
+        "react-syntax-highlighter": "^15.4.4",
+        "react-transition-group": "^4.4.2",
+        "rehype-katex": "4.0.0",
+        "rehype-slug": "^5.0.0",
+        "rehype-toc": "^3.0.2",
+        "remark-gfm": "^2.0.0",
+        "remark-math": "^5.0.0",
+        "styled-components": "^5.3.0",
+        "twin.macro": "^2.7.0",
+        "web-vitals": "^1.1.2"
+    },
+    "scripts": {
+        "start": "craco start",
+        "build": "craco build",
+        "test": "craco test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.8.6",
+        "postcss": "^7.0.36",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    }
 }

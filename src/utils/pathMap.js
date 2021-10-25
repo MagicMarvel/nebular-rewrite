@@ -1,10 +1,6 @@
 // 接口基地址
-// export const BASE_URL = "http://sankuyan.cn";
-
-// 测试用
-// export const BASE_URL = "http://81.71.18.45:5000/";
-
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "http://sankuyan.cn";
+// export const BASE_URL = "http://localhost:3000";
 
 // 具体地址
 export const GET_ARTICLE_BY_ID = "/public/article/get";
@@ -32,5 +28,5 @@ export const GET_ANSWER_BY_ANSWERID = "/public/answer/get";
 export const GET_QUESTION_LIST_BY_CURRENCY_USER = "/question/listMe";
 
 export function getUsrPhoto(username) {
-  return `${BASE_URL}/user/${username}/ProfilePhoto.jpg`;
+    return `${BASE_URL}/user/${username}/ProfilePhoto.jpg`;
 }
