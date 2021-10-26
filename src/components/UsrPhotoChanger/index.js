@@ -74,13 +74,13 @@ export default function Demo(props) {
 
     return (
         <div
-            className="flex justify-center items-center w-4/5 mx-auto mt-3 bg-white shadow-lg rounded-xl p-3 bg-opacity-90"
+            className="flex justify-center items-center w-11/12 lg:w-4/5 mx-auto mt-3 bg-white shadow-lg rounded-xl p-3 bg-opacity-90"
             style={{
                 backdropFilter: "blur(2px)",
                 WebkitBackdropFilter: "blur(2px)",
             }}
         >
-            <div className="w-4/5">
+            <div className="w-full lg:w-4/5">
                 <div style={{ width: "100%" }}>
                     <div className="flex justify-between items-center my-2">
                         <input type="file" onChange={onChange} />
@@ -128,17 +128,17 @@ export default function Demo(props) {
                         guides={true}
                     />
                 </div>
-                <div className="flex justify-between">
-                    <div className="box w-1/2 p-3 rounded border border-blue-300 m-1">
+                <div className="flex justify-around flex-row flex-wrap">
+                    <div className="box box-border w-72 p-3 rounded border border-blue-300 m-1 flex-shrink-0">
                         <div
                             className="img-preview w-full overflow-hidden"
-                            style={{ height: "300px" }}
+                            style={{ height: "288px" }}
                         />
                         <div className=" flex text-base justify-center items-center text-gray-500 font-kaiti">
                             预览
                         </div>
                     </div>
-                    <div className=" border border-blue-300 rounded w-1/2 m-1 inline-block p-3 box-border">
+                    <div className="flex-shrink-0 border box-border border-blue-300 rounded w-72 m-1 inline-block p-3">
                         {cropData !== "#" ? (
                             <img
                                 className="rounded-full border border-blue-100 h-56 w-56 p-1"
@@ -146,7 +146,7 @@ export default function Demo(props) {
                                 alt="未切割"
                             />
                         ) : (
-                            <div style={{ height: "300px" }}></div>
+                            <div style={{ height: "288px" }}></div>
                         )}
                         <div className=" flex text-base justify-center items-center text-gray-500 font-kaiti">
                             最终效果
