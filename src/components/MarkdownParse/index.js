@@ -89,11 +89,20 @@ export default function Index(props) {
                                 PreTag="div"
                                 {...props}
                             />
-                        ) : (
+                        ) : inline !== true ? (
                             <code
                                 className={`${className} inline-block font-JetBrains text-xs lg:text-sm 
                 text-gray-500 rounded bg-gray-400 bg-opacity-30 px-1.5 w-full py-1
                  overflow-x-auto break-all`}
+                                {...props}
+                            >
+                                {children}
+                            </code>
+                        ) : (
+                            <code
+                                className={`${className} inline-block font-JetBrains text-xs lg:text-sm 
+                            text-gray-500 rounded bg-gray-400 bg-opacity-30 px-1.5
+                            break-all`}
                                 {...props}
                             >
                                 {children}
