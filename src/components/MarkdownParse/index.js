@@ -24,7 +24,7 @@ import rehypeKatex from "rehype-katex";
 import rehypeToc from "rehype-toc";
 import rehypeSlug from "rehype-slug";
 
-import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
+// import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for you
 
 // 渲染图片链接 https://github.com/Pondorasti/remark-img-links
 import remarkImgLinks from "@pondorasti/remark-img-links";

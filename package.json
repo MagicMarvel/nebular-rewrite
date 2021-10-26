@@ -1,6 +1,6 @@
 {
     "name": "nebular",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "homepage": "/",
     "proxy": "http://www.sankuyan.cn",
@@ -33,11 +33,11 @@
         "web-vitals": "^1.1.2"
     },
     "scripts": {
-        "server": "serve -s build",
+        "serve": "serve -s build",
         "analyze": "source-map-explorer build/static/js/*.js",
         "start": "craco start",
         "build": "craco build",
-        "postbuild": "gzip build/static/js/*.js && gzip build/static/css/*.css",
+        "ppostbuild": "gzip build/static/js/*.js && gzip  build/static/css/*.css",
         "test": "craco test",
         "eject": "react-scripts eject"
     },

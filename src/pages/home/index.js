@@ -67,6 +67,7 @@ export default function Index(props) {
                 const res = await Require.get(GET_USER);
                 if (res.data.code === 1) {
                     //  登录成功
+                    console.log("session登录成功");
                     if (mainDisplay === true)
                         toastController({
                             mes: `欢迎回来 ${res.data.data.username}`,
@@ -81,6 +82,7 @@ export default function Index(props) {
                 const res = await Require.post(LOGIN);
                 if (res.data.code === 1) {
                     //  登录成功
+                    console.log("无密码登录成功");
                     const res = await Require.get(GET_USER);
                     setUsrInformation(res.data.data);
                     if (mainDisplay === true)
