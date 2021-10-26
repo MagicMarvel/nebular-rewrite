@@ -1,14 +1,13 @@
 import axios from "axios";
-import { BASE_URL } from "./pathMap";
 
 const instance = axios.create({
-  baseURL: BASE_URL + "/api",
-  //   timeout: 2000,
+    // baseURL: BASE_URL + "/api",
+    baseURL: "/api",
 });
 
 const exp = {
-  get: instance.get,
-  post: instance.post,
+    get: instance.get,
+    post: instance.post,
 };
 
 export default exp;

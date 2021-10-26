@@ -15,8 +15,9 @@ export default function Index(props) {
                     articleId: articleId,
                 },
             });
-            if (res.data.code === 1) setArticleInformation(res.data.data);
-            else
+            if (res.data.code === 1) {
+                setArticleInformation(res.data.data);
+            } else
                 setArticleInformation({
                     title: "文章不存在",
                     content: "文章不存在，若你认为这是一个错误，请向管理员联系",

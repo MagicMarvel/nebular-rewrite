@@ -1,6 +1,5 @@
 // markdown渲染器
 import React from "react";
-import { BASE_URL } from "../../utils/pathMap";
 
 // 用于将markdown格式渲染成html https://github.com/remarkjs/react-markdown
 import ReactMarkdown from "react-markdown";
@@ -43,7 +42,7 @@ export default function Index(props) {
                 // children={s}
                 remarkPlugins={[
                     remarkMath,
-                    [remarkImgLinks, { absolutePath: BASE_URL }],
+                    [remarkImgLinks, { absolutePath: "http://localhost/" }],
                     remarkGfm,
                 ]}
                 rehypePlugins={[
