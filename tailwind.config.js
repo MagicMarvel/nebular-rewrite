@@ -39,8 +39,8 @@ module.exports = {
                 DEFAULT: theme("colors.gray.500", "currentColor"),
             }),
             backgroundImage: (theme) => ({
-                sky: "url('https://z3.ax1x.com/2021/09/10/hvsPXQ.png')",
-                guitar: "url('https://z3.ax1x.com/2021/09/10/hv6YQO.png')",
+                sky: "url('https://z3.ax1x.com/2021/10/26/5ISrHP.png')",
+                guitar: "url('https://z3.ax1x.com/2021/10/26/5ISDBt.png')",
             }),
         },
     },

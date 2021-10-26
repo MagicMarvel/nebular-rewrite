@@ -6,8 +6,15 @@ import ReactMarkdown from "react-markdown";
 // 为上面的渲染增加增强插件 https://github.com/remarkjs/remark-gfm
 import remarkGfm from "remark-gfm";
 // 为上面的渲染增加代码高亮组件 https://github.com/react-syntax-highlighter/react-syntax-highlighter
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialOceanic } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+// 提供了支持的语言（显然现在这步是无用的，因为已经启用渲染器异步加载，只会加载需要的语言不会一次性全部打包）
+// import cpp from "react-syntax-highlighter/dist/esm/languages/prism/cpp";
+// import c from "react-syntax-highlighter/dist/esm/languages/prism/c";
+// import java from "react-syntax-highlighter/dist/esm/languages/prism/java";
+// import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
+
 // 提供数学公式渲染功能
 // use a syntax extension (through remark-math) is used to support math in markdown,
 // and a transform plugin (rehype-katex) to render that math.
@@ -21,6 +28,12 @@ import "katex/dist/katex.min.css"; // `rehype-katex` does not import the CSS for
 
 // 渲染图片链接 https://github.com/Pondorasti/remark-img-links
 import remarkImgLinks from "@pondorasti/remark-img-links";
+
+// 注册需要的语言（显然异步后这个不需要了）
+// SyntaxHighlighter.registerLanguage("c++", cpp);
+// SyntaxHighlighter.registerLanguage("c", c);
+// SyntaxHighlighter.registerLanguage("java", java);
+// SyntaxHighlighter.registerLanguage("python", python);
 
 // 输入：markdown，传入noTOC可以不渲染TOC，传入h1NoLine可关闭h1标签下面的横线
 // TODO:增强目录的效果
