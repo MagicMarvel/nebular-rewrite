@@ -55,7 +55,7 @@ export default function Index(props) {
                 // children={s}
                 remarkPlugins={[
                     remarkMath,
-                    [remarkImgLinks, { absolutePath: "http://localhost/" }],
+                    [remarkImgLinks, { absolutePath: "http://sankuyan.cn" }],
                     remarkGfm,
                 ]}
                 rehypePlugins={[
