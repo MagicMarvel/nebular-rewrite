@@ -17,7 +17,7 @@ function QAItem(props) {
         >
             <Link
                 className=" group-hover:tracking-widest transform 
-           transition-all duration-150 tracking-wide select-none font-kaiti"
+           transition-all duration-150 tracking-wide select-none font-kaiti text-base lg:text-2xl"
                 to={`/QA/${props.questionId}`}
             >
                 {props.title}
