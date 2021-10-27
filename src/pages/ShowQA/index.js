@@ -42,7 +42,7 @@ function AnswerRender(props) {
                             <span className="mr-2">
                                 answer at {answer.date}
                             </span>
-                            <span className="">by {answer.username}</span>
+                            <span className="">by {answer.author}</span>
                         </div>
                     </div>
                     <div className=" hidden my-1 md:block">
