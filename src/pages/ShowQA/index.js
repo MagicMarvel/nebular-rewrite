@@ -41,7 +41,7 @@ function AnswerRender(props) {
                             h1NoLine
                             markdown={answer.content}
                         />
-                        <div className=" text-gray-400 text-base font-kaiti mt-3">
+                        <div className="float-right text-gray-400 text-base font-kaiti mt-3">
                             <span className="mr-2">
                                 answer at {answer.date}
                             </span>
