@@ -31,21 +31,24 @@ function AnswerRender(props) {
     return (
         <div className="w-full">
             {answer !== undefined && (
-                <div className="flex border-t-2 border-dotted border-blue-300 w-full justify-between">
-                    <div className=" my-1 mr-3 md:mr-8 p-1 flex-grow flex-shrink mb-5 max-w-full">
+                <div
+                    className="flex border-t-2 border-dotted border-blue-300 w-full justify-between"
+                    style={{ width: "100%" }}
+                >
+                    <div className=" my-1 mr-3 md:mr-8 p-1 mb-5 w-0 flex-grow">
                         <MarkdownParse
                             noTOC
                             h1NoLine
                             markdown={answer.content}
                         />
-                        <div className="float-right text-gray-400 text-base font-kaiti mt-3">
+                        <div className=" text-gray-400 text-base font-kaiti mt-3">
                             <span className="mr-2">
                                 answer at {answer.date}
                             </span>
                             <span className="">by {answer.author}</span>
                         </div>
                     </div>
-                    <div className=" hidden my-1 md:block">
+                    <div className=" hidden min-w-max my-1 md:block w-0 ">
                         <UserCard uid={answer.uid} />
                     </div>
                 </div>

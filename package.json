@@ -37,7 +37,6 @@
         "analyze": "source-map-explorer build/static/js/*.js",
         "start": "craco start",
         "build": "craco build",
-        "ppostbuild": "gzip build/static/js/*.js && gzip  build/static/css/*.css",
         "test": "craco test",
         "eject": "react-scripts eject"
     },
