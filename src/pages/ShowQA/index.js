@@ -22,6 +22,8 @@ function AnswerRender(props) {
             const res = await Require.get(GET_ANSWER_BY_ANSWERID, {
                 params: {
                     answerId: props.answerId,
+                    size: 999,
+                    page: 1,
                 },
             });
             setAnswer(res.data.data);
