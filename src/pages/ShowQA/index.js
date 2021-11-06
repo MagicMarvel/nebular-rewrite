@@ -50,7 +50,7 @@ function AnswerRender(props) {
                             <span className="">by {answer.author}</span>
                         </div>
                     </div>
-                    <div className=" hidden min-w-max my-1 md:block w-0 ">
+                    <div className=" hidden min-w-max my-1 lg:block w-0 ">
                         <UserCard uid={answer.uid} />
                     </div>
                 </div>
