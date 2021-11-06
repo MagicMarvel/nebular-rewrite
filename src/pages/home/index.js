@@ -193,19 +193,21 @@ export default function Index(props) {
                                         {/* 按钮 */}
                                         <div className="h-14 relative border-l"></div>
                                         <div className="max-w-min ">
-                                            <div className="flex flex-col items-center max-w-full min-w-min w-40 sm:flex-row">
-                                                <LiBtm
-                                                    linkTo="#"
-                                                    choice="brief-introduction"
-                                                    handleChoiceChange={
-                                                        setChoice
-                                                    }
-                                                    handleClick={setMainDisplay}
-                                                >
-                                                    简介
-                                                </LiBtm>
-                                                {usrInformation ===
-                                                undefined ? (
+                                            {/* 判断是否登录了，登陆了给一套按钮，没登陆给另一套 */}
+                                            {usrInformation === undefined ? (
+                                                <div className="flex flex-col items-center max-w-full min-w-min w-40 sm:flex-row">
+                                                    <LiBtm
+                                                        linkTo="#"
+                                                        choice="brief-introduction"
+                                                        handleChoiceChange={
+                                                            setChoice
+                                                        }
+                                                        handleClick={
+                                                            setMainDisplay
+                                                        }
+                                                    >
+                                                        简介
+                                                    </LiBtm>
                                                     <LiBtm
                                                         linkTo="/home/login"
                                                         choice="login"
@@ -218,19 +220,6 @@ export default function Index(props) {
                                                     >
                                                         登录
                                                     </LiBtm>
-                                                ) : (
-                                                    <Link
-                                                        className="h-12 w-full border rounded-sm flex items-center justify-center 
-                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
-                                                        to="/articleList/1"
-                                                    >
-                                                        <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
-                                                            文章
-                                                        </p>
-                                                    </Link>
-                                                )}
-                                                {usrInformation ===
-                                                undefined ? (
                                                     <LiBtm
                                                         linkTo="/home/regist"
                                                         choice="regist"
@@ -243,7 +232,27 @@ export default function Index(props) {
                                                     >
                                                         注册
                                                     </LiBtm>
-                                                ) : (
+                                                    <a
+                                                        className="h-12 w-full border rounded-sm flex items-center justify-center 
+                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
+                                                        href="http://119.91.84.186/"
+                                                    >
+                                                        <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
+                                                            SOJ
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            ) : (
+                                                <div className="flex flex-col items-center max-w-full min-w-min w-40 sm:flex-row">
+                                                    <Link
+                                                        className="h-12 w-full border rounded-sm flex items-center justify-center 
+                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
+                                                        to="/articleList/1"
+                                                    >
+                                                        <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
+                                                            文章
+                                                        </p>
+                                                    </Link>
                                                     <Link
                                                         className="h-12 w-full border rounded-sm flex items-center justify-center 
                           hover:bg-white hover:bg-opacity-5 transition-all duration-300"
@@ -253,19 +262,29 @@ export default function Index(props) {
                                                             问答
                                                         </p>
                                                     </Link>
-                                                )}
-
-                                                <LiBtm
-                                                    linkTo="#"
-                                                    choice="contact"
-                                                    handleChoiceChange={
-                                                        setChoice
-                                                    }
-                                                    handleClick={setMainDisplay}
-                                                >
-                                                    联系
-                                                </LiBtm>
-                                            </div>
+                                                    <Link
+                                                        className="h-12 w-full border rounded-sm flex items-center justify-center 
+                          hover:bg-white hover:bg-opacity-5 transition-all duration-300"
+                                                        to="/personalPage"
+                                                    >
+                                                        <p className="text-white text-center text-sm px-7 inline-block w-full sm:w-32">
+                                                            个人
+                                                        </p>
+                                                    </Link>
+                                                    <LiBtm
+                                                        linkTo="#"
+                                                        choice="contact"
+                                                        handleChoiceChange={
+                                                            setChoice
+                                                        }
+                                                        handleClick={
+                                                            setMainDisplay
+                                                        }
+                                                    >
+                                                        联系
+                                                    </LiBtm>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                     {/* footer */}
