@@ -10,6 +10,7 @@ import Require from "../../utils/Require";
 import { GET_USER, LOGIN, getUsrPhoto } from "../../utils/pathMap";
 import axios from "axios";
 
+// 为了复用逻辑，把按钮的样式和逻辑全部提取出来了
 const LiBtm = (props) => {
     return (
         <Link
@@ -140,22 +141,27 @@ export default function Index(props) {
                                     {/* container */}
                                     <div className="flex flex-col items-center">
                                         {/* logo */}
-                                        <Link
+                                        <div
                                             className="w-16 h-16 sm:w-20 sm:h-20 border rounded-full hover:-rotate-6
-                    transition-all transform duration-300 cursor-pointer"
-                                            to="/personalPage"
+                    transition-all transform duration-300"
                                         >
+                                            {/* 有头像显示头像 */}
                                             {usrInformation !== undefined &&
                                             photoBlob !== undefined ? (
-                                                <img
-                                                    className="rounded-full "
-                                                    src={photoBlob}
-                                                    alt="头像"
-                                                />
+                                                <Link
+                                                    to="/personalPage"
+                                                    className="cursor-pointer"
+                                                >
+                                                    <img
+                                                        className="rounded-full"
+                                                        src={photoBlob}
+                                                        alt="头像"
+                                                    />
+                                                </Link>
                                             ) : (
                                                 ""
                                             )}
-                                        </Link>
+                                        </div>
                                         <div className="h-14 border-l"></div>
                                         {/* 用户信息，Main部分 */}
                                         <div
