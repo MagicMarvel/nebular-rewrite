@@ -20,12 +20,13 @@ export default function index(props) {
                     {/* flex浮动控制用 */}
                     <div></div>
                     {/* 博客名 */}
-                    <div
+                    <Link
                         className="text-6xl font-Playball text-center text-gray-600 my-2 hover:text-purple-600 
           transform transition-all md:ml-14 select-none"
+                        to="/"
                     >
                         Nebula
-                    </div>
+                    </Link>
                     {/* 座右铭 */}
                     <div className="text-gray-400 text-sm font-kaiti -mt-4 md:ml-14 select-none">
                         {randomMotto()}
@@ -33,12 +34,6 @@ export default function index(props) {
                     {/* 导航栏 */}
                     <div className="flex items-center justify-center w-full border-t border-b border-gray-300 h-12 md:justify-between">
                         <ul className="flex justify-between mx-4 font-kaiti w-5/6 text-gray-600 md:w-3/5 md:ml-10">
-                            <Link
-                                to="/"
-                                className="hover:text-purple-600 transform transition-all"
-                            >
-                                首页
-                            </Link>
                             <Link
                                 to="/personalPage"
                                 className="hover:text-purple-600 transform transition-all"
@@ -57,6 +52,12 @@ export default function index(props) {
                             >
                                 问答
                             </Link>
+                            <a
+                                href="http://119.91.84.186"
+                                className="hover:text-purple-600 transform transition-all"
+                            >
+                                SOJ
+                            </a>
                         </ul>
                         {/* TODO：添加网站信息 */}
                         {/* 网站信息，点击量之类的 */}
