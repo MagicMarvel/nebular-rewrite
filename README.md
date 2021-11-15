@@ -6,7 +6,11 @@
 
     这里推荐使用`Window`下的包管理器`Scoop`安装 Node，当然，直接安装也行（上面的链接都有说的）
 
--   clone 该项目
+-   安装`git`，下载后疯狂下一步即可
+
+    [git 下载链接](https://git-scm.com/downloads)
+
+-   用 git clone 该项目
     ```bash
     git clone https://github.com/MagicMarvel/nebular-rewrite.git
     ```
