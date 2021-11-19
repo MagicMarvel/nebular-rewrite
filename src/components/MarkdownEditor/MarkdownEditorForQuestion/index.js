@@ -256,7 +256,7 @@ export default function Index(props) {
                        text-gray-800 rounded transition-all duration-200 outline-none focus:border-blue-300 focus:ring-1 resize-none"
                                         minLength="30"
                                         type="text"
-                                        placeholder="可以输入markdown代码哦~"
+                                        placeholder={`# 这是一级标题\n\n## 这是二级标题\n\n正文就直接打就行啦 \n\n这是代码块，你可以输入你的代码在这里面，他就会自动渲染出来，（不信？按照下面写，去渲染一下就知道效果了u＞︿＜\n \`\`\`c++\n#include<iostream>\nusing namespace std;\nint main(){\n    cout<<"HelloWorld;\n}\n\`\`\``}
                                         value={markdownInput}
                                         onChange={handleInput}
                                     ></textarea>
